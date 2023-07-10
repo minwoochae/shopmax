@@ -38,6 +38,14 @@ public class ItemController {
 		return "item/itemForm";
 	}
 	
+	//상품 상세 페이지
+	@GetMapping(value = "/item/{itemId}")
+	public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
+		ItemFormDto itemFormDto =itemService.getItemDtl(itemId);
+		model.addAttribute("item", itemFormDto);
+		return "item/itemDtl";
+	}
+	
 	
 	//상품, 상품이미지 등록(insert)
 	@PostMapping(value = "/admin/item/new")
@@ -85,7 +93,7 @@ public class ItemController {
 	public String itemDtl(@PathVariable("itemId") Long itemId, Model model) {
 		
 		try {
-			ItemFormDto itemFormDto = itemService.getItemDt1(itemId);
+			ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
 			model.addAttribute("itemFormDto", itemFormDto);
 			
 		} catch (Exception e) {

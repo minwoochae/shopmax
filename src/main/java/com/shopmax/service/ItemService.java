@@ -56,7 +56,7 @@ public class ItemService {
 	
 	// 상품 가져오기
 		@Transactional(readOnly = true) // 트랜잭션 읽기 전용(변경감지 수행하지 않음) -> 성능 향상
-		public ItemFormDto getItemDt1(Long itemId) {
+		public ItemFormDto getItemDtl(Long itemId) {
 			// 1. item_img 테이블의 이미지를 가져온다.
 			List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
 			
