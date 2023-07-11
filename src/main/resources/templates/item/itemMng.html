@@ -63,7 +63,7 @@
 						<!-- 페이징버튼 -->
 						<!-- start(페이지 시작 번호) = (현제 페이지 번호 / 보여줄 페이지수) * 보여줄 페이지 수 + 1 -->
 						<!-- end(페이지 끝 번호) = start + (보여줄 페이지 수 - 1)-->
-											<nav
+						<nav
 							th:with="start=${(items.number/maxPage)*maxPage + 1}
 									,end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})"
 							aria-label="Page navigation example">

@@ -27,7 +27,15 @@ public class ItemController {
 	
 	// 상품전체 리스트
 	@GetMapping(value = "/item/shop")
-	public String itemShopList() {
+	public String itemShopList(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page)  {
+			
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
+		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+			
+		model.addAttribute("items",items);
+		model.addAttribute("itemSearchDto",itemSearchDto);
+		model.addAttribute("maxPage",5);
+			
 		return "item/itemShopList";
 	}
 
