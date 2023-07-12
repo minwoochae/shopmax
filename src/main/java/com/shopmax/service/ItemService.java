@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shopmax.Dto.ItemFormDto;
 import com.shopmax.Dto.ItemImgDto;
+import com.shopmax.Dto.ItemRankDto;
 import com.shopmax.Dto.ItemSearchDto;
 import com.shopmax.Dto.MainItemDto;
 import com.shopmax.entity.Item;
@@ -107,5 +108,10 @@ public class ItemService {
 	public Page<MainItemDto> getMainItemPage (ItemSearchDto itemSearchDto, Pageable pageable){
 		Page<MainItemDto> itemPage = itemRepository.getMainItemPage(itemSearchDto, pageable);
 		return itemPage;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<ItemRankDto> getItemRankList(){
+		return itemRepository.getItemRankList();
 	}
 }

@@ -36,9 +36,9 @@ public class Order extends BaseEntity {
 	@OneToMany(mappedBy = "order" , cascade = CascadeType.ALL, orphanRemoval = true , fetch =FetchType.LAZY) //연관관계의 주인 설정(외래키로 지정)
 	private List<OrderItem> orderItems =new ArrayList<>();
 
-	public void addOrderItem(OrderItem orderItme) {
-		this.orderItems.add(orderItme);
-		orderItme.setOrder(this);
+	public void addOrderItem(OrderItem orderItem) {
+		this.orderItems.add(orderItem);
+		orderItem.setOrder(this);
 	}
 
 	//order 객체를 생성해준다

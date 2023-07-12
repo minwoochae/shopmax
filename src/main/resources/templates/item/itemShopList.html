@@ -103,7 +103,7 @@
 																			+ '&page=' + ${page - 1}">[[${page}]]</a>
 							</li>
 								
-						    <li class="page-item" th:classappend="${items.last}?'disabled'">x
+						    <li class="page-item" th:classappend="${items.last}?'disabled'">
 									<a class="page-link"
 										th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
 																			+ '&page=' + ${items.number + 1}">다음</a>
