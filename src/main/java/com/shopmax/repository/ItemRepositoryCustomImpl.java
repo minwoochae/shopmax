@@ -54,7 +54,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 			//등록자 검색시 
 			return QItem.item.itemNm.like("%" + searchQuery + "%"); //item_nm like %검색어%
 		}else if(StringUtils.equals("createdBy",searchBy)) {
-			return QItem.item.CreatedBy.like("%" + searchQuery + "%"); //create_by like %검색어%
+			return QItem.item.createdBy.like("%" + searchQuery + "%"); //create_by like %검색어%
 		}
 		return null;
 	}
