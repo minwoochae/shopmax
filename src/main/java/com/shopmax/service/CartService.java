@@ -3,22 +3,26 @@ package com.shopmax.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shopmax.Dto.CartDto;
-import com.shopmax.Dto.OrderDto;
+import com.shopmax.Dto.CartHistDto;
+import com.shopmax.Dto.CartItemDto;
+
 import com.shopmax.entity.Cart;
 import com.shopmax.entity.CartItem;
 import com.shopmax.entity.Item;
+import com.shopmax.entity.ItemImg;
 import com.shopmax.entity.Member;
-import com.shopmax.entity.Order;
-import com.shopmax.entity.OrderItem;
+
 import com.shopmax.repository.CartRepository;
 import com.shopmax.repository.ItemImgRepository;
 import com.shopmax.repository.ItemRepository;
 import com.shopmax.repository.MemberRepository;
-import com.shopmax.repository.OrderRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -54,4 +58,36 @@ public class CartService {
 		
 		return cart.getId();
 	}
+	
+	
+	//주문 목록을 가져오는 서비스
+	@Transactional(readOnly = true)
+	public Page<CartHistDto> getCartList(String email, Pageable pageable){
+		//1. 유저 아이디와 페이징 조건을 이용하여 주문 목록을 조회
+		System.out.println(email + "ㅇㅇㅇㅇㅇㅇㅇ");
+		List<Cart> carts =cartRepository.findCarts(email, pageable);
+		//2. 유저의 주문 총개수를 구한다.
+		Long totalcount = cartRepository.countCart(email);
+	
+		
+		//3. 주문 리스트를 순회하면서 구매 이력 페이지 전달형 DTO(orderHistDto)를 생성
+		List<CartHistDto> cartHistDtos = new ArrayList<>();
+		for(Cart cart : carts) {
+			CartHistDto cartHistDto = new CartHistDto(cart);
+			List<CartItem> cartItems = cart.getCartItems();
+			
+			for(CartItem cartItem : cartItems) {
+				//상품의 대표 이미지 가져오기
+				ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
+					CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl());
+					cartHistDto.addCartItemDto(cartItemDto);
+					
+			}
+			cartHistDtos.add(cartHistDto);
+		}
+	
+		
+		return new PageImpl<>(cartHistDtos,pageable, totalcount); //4.페이지 구현 객체를 생성하여 return
+	}
 }
+ 
