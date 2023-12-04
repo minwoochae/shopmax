@@ -40,5 +40,7 @@ public class CartItem  extends BaseEntity{
 		
 		}
 
-		
+		public int getTotalPrice() {
+			return cartPrice + count;
+		}
 }

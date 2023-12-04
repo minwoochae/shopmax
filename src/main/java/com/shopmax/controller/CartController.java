@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,9 +24,11 @@ import com.shopmax.Dto.CartDto;
 import com.shopmax.Dto.CartHistDto;
 import com.shopmax.Dto.OrderDto;
 import com.shopmax.Dto.OrderHistDto;
+import com.shopmax.entity.Order;
 import com.shopmax.service.CartService;
 import com.shopmax.service.OrderService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -74,4 +77,20 @@ public class CartController {
 		 
 		return "cart/cartList";
 	}
+	//주문 삭제
+	@DeleteMapping("/cart/{cartId}/delete")
+	public @ResponseBody ResponseEntity deleteOrder(@PathVariable("cartId") Long cartId,
+			Principal principal) {
+		//1.본인인증
+		if(!cartService.validateCart(cartId, principal.getName())) {
+			return new ResponseEntity<String>("주문 삭제 권한이 없습니다." , HttpStatus.FORBIDDEN);
+		}
+		
+		//2. 주문삭제
+		cartService.deleteCart(cartId);
+		
+		return new ResponseEntity<Long>(cartId, HttpStatus.OK);
+	}
+	
+
 }

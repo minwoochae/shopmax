@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
@@ -9,8 +13,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
-
-
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -67,7 +69,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 										</div>
 									</td>
 									<td id="resultValue"></td>
-									<td><a href="#" class="btn btn-primary height-auto btn-sm">X</a></td>
+									<td>
+										<button type="button" class="btn btn-primary"
+											th:value="${cart.cartId}" onclick="deleteCart(this.value)">삭제하기</button>
+									</td>
 								</tr>
 							</tbody>
 						</table>

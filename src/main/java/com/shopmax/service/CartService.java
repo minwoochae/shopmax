@@ -8,21 +8,23 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import com.shopmax.Dto.CartDto;
 import com.shopmax.Dto.CartHistDto;
 import com.shopmax.Dto.CartItemDto;
-
+import com.shopmax.Dto.OrderDto;
 import com.shopmax.entity.Cart;
 import com.shopmax.entity.CartItem;
 import com.shopmax.entity.Item;
 import com.shopmax.entity.ItemImg;
 import com.shopmax.entity.Member;
-
+import com.shopmax.entity.Order;
 import com.shopmax.repository.CartRepository;
 import com.shopmax.repository.ItemImgRepository;
 import com.shopmax.repository.ItemRepository;
 import com.shopmax.repository.MemberRepository;
+import com.shopmax.repository.OrderRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +37,11 @@ public class CartService {
 	private final MemberRepository memberRepository;
 	private final CartRepository cartRepository;
 	private final ItemImgRepository itemImgRepository;
+	private final OrderRepository orderRepository;
 	
 
 	//장바구니 담기
-	public Long cart(CartDto cartDto, String email) {
+	public Long cart(CartDto cartDto,String email) {
 		
 		//1.주문할 상품을 조회
 		Item item = itemRepository.findById(cartDto.getItemId())
@@ -53,7 +56,7 @@ public class CartService {
 		cartItemList.add(cartItem);
 		
 		//4. 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티를 생성
-		Cart cart = Cart.createCart(member, cartItemList);
+		Cart cart = Cart.createCart(member , cartItemList);
 		cartRepository.save(cart); //insert
 		
 		return cart.getId();
@@ -89,5 +92,32 @@ public class CartService {
 		
 		return new PageImpl<>(cartHistDtos,pageable, totalcount); //4.페이지 구현 객체를 생성하여 return
 	}
+	
+	//본인확인 (현재 로그인한 사용자와 주문 데이터를 생성한 사용자가 같은지 검사)
+	public boolean validateCart(Long cartId, String email) {
+		Member curMember = memberRepository.findByEmail(email); //로그인한 사용자 찾기
+		Cart cart = cartRepository.findById(cartId)
+									 .orElseThrow(EntityNotFoundException::new); //주문 내역
+		
+		Member saveMember = cart.getMember(); //주문한 사용자 찾기
+		//로그인한 사용자의 이메일과 주문한 사용자의 이메일의 값이 같은지 최종 비교
+		if(!StringUtils.equals(curMember.getEmail(), saveMember.getEmail())) {
+			//같지 않으면
+			return false;
+		}
+		return true;
+	}
+	
+	//주문삭제
+	public void deleteCart(Long cartId) {
+		//+delete하기 전에 select 를 한번 해준다
+		//-> 영속성 컨텍스트에 앤티티를 저장한 후 변경 감지를 하도록 하기 위해
+		Cart cart = cartRepository.findById(cartId)
+				.orElseThrow(EntityNotFoundException::new);
+		
+//		delete
+		cartRepository.delete(cart);
+	}
+	
 }
  

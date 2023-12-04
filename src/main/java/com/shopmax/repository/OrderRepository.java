@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.shopmax.entity.Member;
 import com.shopmax.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long>{
@@ -17,4 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 	//현재 로그인한 회원의 주문 개수가 몇개인지 조회
 	@Query("select count(o) from Order o where o.member.email = :email")
 	Long countOrder(@Param("email") String email);
+	
+	
+	
 }

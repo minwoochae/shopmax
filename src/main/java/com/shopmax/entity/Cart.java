@@ -27,10 +27,15 @@ public class Cart  extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private CartStatus cartStatus; //주문상태
 	
-	@OneToOne(fetch =FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", unique = false)
 	private Member member;
 	
+/*
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id", unique = false)
+	private Order order;
+	*/
 	//order에서도 orderItem을 참조할 수 있도록 양방향 관계를 만든다.
 	//다만 orderItem은 자식 테이블이 되므로 List로 만든다.
 	@OneToMany(mappedBy = "cart" , cascade = CascadeType.ALL, orphanRemoval = true , fetch =FetchType.LAZY) //연관관계의 주인 설정(외래키로 지정)
@@ -41,17 +46,25 @@ public class Cart  extends BaseEntity{
 		cartItem.setCart(this);
 	}
 	
-	//order 객체를 생성해준다
+	//cart 객체를 생성해준다
 	public static Cart createCart(Member member, List<CartItem> cartItemList) {
 		Cart cart = new Cart();
 		cart.setMember(member);
-		
 		for(CartItem cartItem : cartItemList){
 			cart.addOrderItem(cartItem);
 		}
 		cart.setCartStatus(CartStatus.CART);
 		cart.setCartDate(LocalDateTime.now());
 		return cart;
+	}
+	
+	//총 주문 금액
+	public int getTotalPrice() {
+		int totalPrice = 0 ;
+		for(CartItem cartItem : cartItems) {
+			totalPrice += cartItem.getTotalPrice();
+		}
+		return totalPrice;
 	}
 	
 }
