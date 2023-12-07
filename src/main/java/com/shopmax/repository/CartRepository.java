@@ -16,4 +16,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	//현재 로그인한 회원의 주문 개수가 몇개인지 조회
 	@Query("select count(o) from Cart o where o.member.email = :email")
 	Long countCart(@Param("email") String email);
+	
 }
