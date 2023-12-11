@@ -33,6 +33,9 @@ public class Cart  extends BaseEntity{
 	@JoinColumn(name = "member_id", unique = false)
 	private Member member;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item_id", unique = false)
+	private Item item;
 
 	//cart에서도 cartItems 참조할 수 있도록 양방향 관계를 만든다.
 	//다만 CartItem 자식 테이블이 되므로 List로 만든다.
@@ -45,9 +48,10 @@ public class Cart  extends BaseEntity{
 	}
 	
 	//cart 객체를 생성해준다
-	public static Cart createCart(Member member, List<CartItem> cartItemList) {
+	public static Cart createCart(Member member, List<CartItem> cartItemList,Item item) {
 		Cart cart = new Cart();
 		cart.setMember(member);
+		cart.setItem(item);
 		for(CartItem cartItem : cartItemList){
 			cart.addOrderItem(cartItem);
 		}
@@ -64,6 +68,14 @@ public class Cart  extends BaseEntity{
 			totalPrice += cartItem.getTotalPrice();
 		}
 		return totalPrice;
+	}
+	
+	public int getcount() {
+		int count = 0 ;
+		for(CartItem cartItem : cartItems) {
+			count += cartItem.getCount();
+		}
+		return count;
 	}
 	
 }

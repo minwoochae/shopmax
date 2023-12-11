@@ -55,13 +55,56 @@ public class CartService {
 		CartItem cartItem = CartItem.createCartItem(item, cartDto.getCount());
 		cartItemList.add(cartItem);
 		
+		System.out.println(item.getId());
+		System.out.println(cartItem.getItem().getId());
 		//4. 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티를 생성
-		Cart cart = Cart.createCart(member , cartItemList);
+		System.out.println(cartItemList);
+		Cart cart = Cart.createCart(member , cartItemList,item);
 		cartRepository.save(cart); //insert
-		
+	
 		return cart.getId();
 	}
 	
+	
+/*	public Long cart(CartDto cartDto, String email) {
+	    // 1. 주문할 상품을 조회
+	    Item item = itemRepository.findById(cartDto.getItemId())
+	                              .orElseThrow(EntityNotFoundException::new);
+
+	    // 2. 현재 로그인한 회원의 이메일을 이용해 회원정보를 조회
+	    Member member = memberRepository.findByEmail(email);
+
+	    // 3. 회원의 장바구니에서 이미 주문한 상품인지 확인
+	    Cart cart = cartRepository.findByMember(member);
+
+	    List<CartItem> cartItemList;
+	    if (cart == null) {
+	        // 3-1. 장바구니가 없으면 새로운 장바구니 생성
+	        cartItemList = new ArrayList<>();
+	        cart = Cart.createCart(member, cartItemList);
+	    } else {
+	        // 3-2. 장바구니가 이미 있으면 해당 상품의 수량을 업데이트
+	        cartItemList = cart.getCartItems();
+	        Optional<CartItem> existingCartItem = cartItemList.stream()
+	                .filter(ci -> ci.getItem().getId().equals(item.getId()))
+	                .findFirst();
+
+	        if (existingCartItem.isPresent()) {
+	            // 이미 장바구니에 있는 상품이면 알림 및 처리
+	            // 여기서는 간단히 예외를 던지도록 했지만, 실제로는 어떻게 처리할지를 결정해야 함
+	            throw new IllegalArgumentException("이미 장바구니에 있는 상품입니다.");
+	        } else {
+	            // 3-3. 새로운 상품이면 장바구니에 추가
+	            CartItem cartItem = CartItem.createCartItem(item, cartDto.getCount());
+	            cartItemList.add(cartItem);
+	        }
+	    }
+
+	    // 4. 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티를 저장
+	    cartRepository.save(cart);
+
+	    return cart.getId();
+	}*/
 	
 	//주문 목록을 가져오는 서비스
 	@Transactional(readOnly = true)
