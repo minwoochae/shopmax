@@ -1,5 +1,6 @@
 package com.shopmax.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shopmax.Dto.*;
 import com.shopmax.entity.Item;
+import com.shopmax.entity.Member;
+import com.shopmax.service.CartService;
 import com.shopmax.service.ItemService;
+import com.shopmax.service.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +28,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor       //의존성 주입 위해 사용
 public class ItemController {
 	private final ItemService itemService;
+	private final MemberService memberService;
+	private final CartService cartService;
 	
 	// 상품전체 리스트
 	@GetMapping(value = "/item/shop")
-	public String itemShopList(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page)  {
+	public String itemShopList(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page ,Principal principal)  {
 			
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
 		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
@@ -35,7 +41,12 @@ public class ItemController {
 		model.addAttribute("items",items);
 		model.addAttribute("itemSearchDto",itemSearchDto);
 		model.addAttribute("maxPage",5);
-			
+Member members = memberService.getMember(principal.getName());
+		
+		Long Count = cartService.cartCount(members);
+		
+	    // 모델에 상품 수를 추가합니다
+	    model.addAttribute("Count", Count);
 		return "item/itemShopList";
 	}
 

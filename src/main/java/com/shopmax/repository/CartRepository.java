@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.shopmax.entity.Cart;
-import com.shopmax.entity.Member;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 	@Query("select o from Cart o where o.member.email = :email order by o.cartDate desc")
@@ -18,6 +17,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	@Query("select count(o) from Cart o where o.member.email = :email")
 	Long countCart(@Param("email") String email);
 	
+	Cart findByItemId(Long ItemId);
 	
-	Cart findByMember(Member member);
+	
 }

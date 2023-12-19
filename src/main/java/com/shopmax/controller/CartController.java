@@ -24,8 +24,10 @@ import com.shopmax.Dto.CartDto;
 import com.shopmax.Dto.CartHistDto;
 import com.shopmax.Dto.OrderDto;
 import com.shopmax.Dto.OrderHistDto;
+import com.shopmax.entity.Member;
 import com.shopmax.entity.Order;
 import com.shopmax.service.CartService;
+import com.shopmax.service.MemberService;
 import com.shopmax.service.OrderService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -36,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartController {
 	private final CartService cartService;
+	private final MemberService memberService;
 	
 	@PostMapping(value = "/cart")
 	public @ResponseBody ResponseEntity cartList(@RequestBody @Valid CartDto cartDto,
@@ -59,6 +62,7 @@ public class CartController {
 				} catch (Exception e) {
 					return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 				}
+				
 				return new ResponseEntity<Long>(cartId,HttpStatus.OK); //성공시
 	}		
 	
@@ -74,7 +78,16 @@ public class CartController {
 //		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
 		model.addAttribute("carts",cartHistDtoList);
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
-		 
+		
+		
+		//카운트
+		Member members = memberService.getMember(principal.getName());
+		
+		Long Count = cartService.cartCount(members);
+		
+	    // 모델에 상품 수를 추가합니다
+	    model.addAttribute("Count", Count);
+		
 		return "cart/cartList";
 	}
 	//주문 삭제

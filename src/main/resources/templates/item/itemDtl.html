@@ -154,7 +154,7 @@
 				dataType : "json",
 				cache : false,
 				success : function(result, status) {
-					alert("주문이 완료 되었습니다." + result)
+					alert("주문이 완료 되었습니다.")
 					//location.href = '/';
 				},
 				error : function(jqXHR, status, error) {
@@ -204,7 +204,8 @@
 						location.href = '/members/login';	
 				}else{
 					//에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
-					alert(jqXHR.responseText); 
+					//alert(jqXHR.responseText); 
+				alert("이미 담겨 있는 상품입니다.")
 				}
 				}	
 			});

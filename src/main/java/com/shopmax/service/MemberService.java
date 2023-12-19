@@ -26,6 +26,12 @@ public class MemberService implements UserDetailsService{
 		return savedMember; //회원가입된 데이터를 리턴시켜준다.
 	}
 	
+	public Member getMember(String email) {
+		Member getMembers = memberRepository.findByEmail(email); 
+		
+		return getMembers; //
+	}
+	
 	//이메일 중복채크
 	private void validateDuplicatMember(Member member) {
 		Member findMember = memberRepository.findByEmail(member.getEmail());

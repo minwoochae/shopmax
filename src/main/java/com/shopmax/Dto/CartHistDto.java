@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.shopmax.constant.CartStatus;
 import com.shopmax.entity.Cart;
+import com.shopmax.entity.CartItem;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,5 +35,7 @@ public class CartHistDto {
 	public void addCartItemDto(CartItemDto cartItemDto) {
 		this.cartItemDtoList.add(cartItemDto);
 	}
+	
+
 	
 }

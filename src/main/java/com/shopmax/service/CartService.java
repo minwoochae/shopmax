@@ -48,8 +48,12 @@ public class CartService {
 								  .orElseThrow(EntityNotFoundException::new);
 		
 		//2.현재 로그인한 회원의 이메일을 이용해 회원정보를 조회
-		Member member = memberRepository.findByEmail(email);
+		Member member = memberRepository.findByEmail(email);	
 		
+		
+		Cart cartId = cartRepository.findByItemId(item.getId());
+		
+		if(cartId == null) {
 		//3.주문할 상품 엔티티의 주문 수량을 이용하여 주문상품 엔티티를 생성
 		List<CartItem> cartItemList = new ArrayList<>();
 		CartItem cartItem = CartItem.createCartItem(item, cartDto.getCount());
@@ -63,54 +67,21 @@ public class CartService {
 		cartRepository.save(cart); //insert
 	
 		return cart.getId();
+		}else {
+			return null;
+		}
+		
 	}
 	
 	
-/*	public Long cart(CartDto cartDto, String email) {
-	    // 1. 주문할 상품을 조회
-	    Item item = itemRepository.findById(cartDto.getItemId())
-	                              .orElseThrow(EntityNotFoundException::new);
 
-	    // 2. 현재 로그인한 회원의 이메일을 이용해 회원정보를 조회
-	    Member member = memberRepository.findByEmail(email);
 
-	    // 3. 회원의 장바구니에서 이미 주문한 상품인지 확인
-	    Cart cart = cartRepository.findByMember(member);
 
-	    List<CartItem> cartItemList;
-	    if (cart == null) {
-	        // 3-1. 장바구니가 없으면 새로운 장바구니 생성
-	        cartItemList = new ArrayList<>();
-	        cart = Cart.createCart(member, cartItemList);
-	    } else {
-	        // 3-2. 장바구니가 이미 있으면 해당 상품의 수량을 업데이트
-	        cartItemList = cart.getCartItems();
-	        Optional<CartItem> existingCartItem = cartItemList.stream()
-	                .filter(ci -> ci.getItem().getId().equals(item.getId()))
-	                .findFirst();
-
-	        if (existingCartItem.isPresent()) {
-	            // 이미 장바구니에 있는 상품이면 알림 및 처리
-	            // 여기서는 간단히 예외를 던지도록 했지만, 실제로는 어떻게 처리할지를 결정해야 함
-	            throw new IllegalArgumentException("이미 장바구니에 있는 상품입니다.");
-	        } else {
-	            // 3-3. 새로운 상품이면 장바구니에 추가
-	            CartItem cartItem = CartItem.createCartItem(item, cartDto.getCount());
-	            cartItemList.add(cartItem);
-	        }
-	    }
-
-	    // 4. 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티를 저장
-	    cartRepository.save(cart);
-
-	    return cart.getId();
-	}*/
 	
 	//주문 목록을 가져오는 서비스
 	@Transactional(readOnly = true)
 	public Page<CartHistDto> getCartList(String email, Pageable pageable){
 		//1. 유저 아이디와 페이징 조건을 이용하여 주문 목록을 조회
-		System.out.println(email + "ㅇㅇㅇㅇㅇㅇㅇ");
 		List<Cart> carts =cartRepository.findCarts(email, pageable);
 		//2. 유저의 주문 총개수를 구한다.
 		Long totalcount = cartRepository.countCart(email);
@@ -151,6 +122,14 @@ public class CartService {
 		return true;
 	}
 	
+	public Long cartCount(Member member) {
+		
+		Long cart = cartRepository.countCart(member.getEmail());
+		
+		
+		return cart;
+	}
+	
 	//주문삭제
 	public void deleteCart(Long cartId) {
 		//+delete하기 전에 select 를 한번 해준다
@@ -161,6 +140,7 @@ public class CartService {
 //		delete
 		cartRepository.delete(cart);
 	}
+	
 	
 }
  

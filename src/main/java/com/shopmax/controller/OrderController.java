@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopmax.Dto.OrderDto;
 import com.shopmax.Dto.OrderHistDto;
+import com.shopmax.entity.Member;
+import com.shopmax.service.CartService;
+import com.shopmax.service.MemberService;
 import com.shopmax.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -31,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderController {
 	private final OrderService orderService;
+	private final MemberService memberService;
+	private final CartService cartService;
 	
 	
 	@PostMapping(value ="/order")
@@ -72,6 +77,12 @@ public class OrderController {
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
 //		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
 		
+Member members = memberService.getMember(principal.getName());
+		
+		Long Count = cartService.cartCount(members);
+		
+	    // 모델에 상품 수를 추가합니다
+	    model.addAttribute("Count", Count);
 		return "order/orderHist";
 	}
 	
