@@ -41,12 +41,13 @@ public class ItemController {
 		model.addAttribute("items",items);
 		model.addAttribute("itemSearchDto",itemSearchDto);
 		model.addAttribute("maxPage",5);
-Member members = memberService.getMember(principal.getName());
 		
+		if(principal != null){
+		Member members = memberService.getMember(principal.getName());
 		Long Count = cartService.cartCount(members);
-		
 	    // 모델에 상품 수를 추가합니다
 	    model.addAttribute("Count", Count);
+		}
 		return "item/itemShopList";
 	}
 
@@ -59,9 +60,17 @@ Member members = memberService.getMember(principal.getName());
 	
 	//상품 상세 페이지
 	@GetMapping(value = "/item/{itemId}")
-	public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
+	public String itemDtl(Model model, @PathVariable("itemId") Long itemId , Principal principal) {
 		ItemFormDto itemFormDto =itemService.getItemDtl(itemId);
 		model.addAttribute("item", itemFormDto);
+		
+		
+		if(principal != null){
+		Member members = memberService.getMember(principal.getName());
+		Long Count = cartService.cartCount(members);
+	    // 모델에 상품 수를 추가합니다
+	    model.addAttribute("Count", Count);
+		}
 		return "item/itemDtl";
 	}
 	
