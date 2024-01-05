@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.shopmax.entity.Member;
 import com.shopmax.repository.MemberRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 
@@ -39,6 +40,11 @@ public class MemberService implements UserDetailsService{
 		if(findMember != null) {
 			throw new IllegalStateException("이미 가입된 회원입니다.");
 		}
+	}
+	public void deleteMember(Long memberId) {
+		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+
+		memberRepository.delete(member);
 	}
 
 	@Override

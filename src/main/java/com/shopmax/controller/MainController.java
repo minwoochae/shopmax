@@ -38,13 +38,14 @@ public class MainController {
 		model.addAttribute("itemsRank" , itemsRank);
 		model.addAttribute("items" , items);
 		model.addAttribute("itemSearchDto", itemService);
-		
 		if(principal != null) {
-		Member members = memberService.getMember(principal.getName());
+			Member members = memberService.getMember(principal.getName());
+			if(members != null){
 		Long Count = cartService.cartCount(members);
 	    // 모델에 상품 수를 추가합니다
 	    model.addAttribute("Count", Count);
-		}
+			}
+			}
 		
 		
 		

@@ -1,14 +1,23 @@
 package com.shopmax.controller;
 
+import java.security.Principal;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopmax.Dto.MemberFormDto;
 import com.shopmax.entity.Member;
+import com.shopmax.service.CartService;
 import com.shopmax.service.MemberService;
 
 import jakarta.validation.Valid;
@@ -19,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 	private final MemberService memberservice;
+	private final CartService cartService;
 	private final PasswordEncoder passwordEncoder;
 	//문의하기
 	@GetMapping(value = "/members/qa")
@@ -32,7 +42,6 @@ public class MemberController {
 	}
 	
 	//회원가입 화면
-	
 	@GetMapping(value = "/members/new")
 	public String memberForme(Model model) {
 		model.addAttribute("memberFormDto", new MemberFormDto());
@@ -62,11 +71,45 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	//마이페이지
+		@GetMapping(value = "/member/mypage")
+		public String mainMypage( Model model, Principal principal) {
+
+			String members = principal.getName();
+			
+			Member member = memberservice.getMember(members);
+			System.out.println(member);
+			
+			model.addAttribute("member", member);
+			
+			
+			if(principal != null) {
+			//카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		    model.addAttribute("Count", Count);
+			} 
+			return "member/MyPage";
+		
+		}
+		// 탈퇴하기
+		@DeleteMapping(value = "/member/{memberId}/delete")
+		public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+				Principal principal) {
+
+			memberservice.deleteMember(memberId);
+
+			return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+		}
 	//로그인 실패했을때
 	@GetMapping(value="/members/login/error")
 	public String loginError(Model model) {
 		model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.");
 		return "member/memberLoginForm";
 	}
+	
+	
 	
 }
