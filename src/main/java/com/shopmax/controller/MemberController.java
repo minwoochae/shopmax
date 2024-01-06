@@ -92,8 +92,32 @@ public class MemberController {
 		    model.addAttribute("Count", Count);
 			} 
 			return "member/MyPage";
-		
 		}
+		
+		
+		//내 정보 
+		@GetMapping(value = "/member/MyInfo")
+		public String mainMyInpo( Model model, Principal principal) {
+
+			String members = principal.getName();
+			
+			Member member = memberservice.getMember(members);
+			System.out.println(member);
+			
+			model.addAttribute("member", member);
+			
+			
+			if(principal != null) {
+			//카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		    model.addAttribute("Count", Count);
+			} 
+			return "member/MyInfo";
+		}
+		
+		
 		// 탈퇴하기
 		@DeleteMapping(value = "/member/{memberId}/delete")
 		public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,

@@ -52,15 +52,5 @@ public class MainController {
 		return "main";
 	}
 	
-	@GetMapping(value = "/header/number")
-	public String headerNumber (Principal principal, CartDto cartDto , Model model) {
-		Member members = memberService.getMember(principal.getName());
-		
-		Long Count = cartService.cartCount(members);
-		
-	    // 모델에 상품 수를 추가합니다
-	    model.addAttribute("Count", Count);
-		
-	return "fragments/header";
-	}
+
 }
