@@ -46,6 +46,15 @@ public class MemberService implements UserDetailsService{
 
 		memberRepository.delete(member);
 	}
+	
+	//업데이트(내정보수정)
+	public void updateNameAddress(String email, String name, String address) {
+
+		Member member = memberRepository.findByEmail(email);
+
+		member.updatenameAddress(name, address);
+
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -35,6 +35,11 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Role role;//역할
 	
+	public void updatenameAddress(String name, String address) {
+		this.name = name;
+		this.address = address;
+	}
+	
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
 		

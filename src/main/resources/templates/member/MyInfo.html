@@ -5,6 +5,10 @@
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
+	.info{
+	display: flex;
+	padding: 20px;
+	}
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -28,14 +32,22 @@
 						<form role="form" action="/member/MyInfo" method="get"
 							th:object="${member}">
 							<input type="hidden" id="memberId" th:value="${member.Id}" />
+							<div class="info">
+							<div>이름 : &nbsp;</div>
 							<div class="product-name" th:text="${member.name}"></div>
+							</div>
+							<div class="info">
+							<div >이메일 : &nbsp;</div>
 							<div class="product-email" th:text="${member.email}"></div>
-							<!--<div class="product-" th:text="${member}"></div> -->
+							</div>
+							<div class="info">
+							<div>거주지 : &nbsp;</div>
 							<div class="product-address" th:text="${member.address}"></div>
+							</div>
 							<div>
 								<button type="button"
 									class="btn btn-danger waves-effect waves-light btnmember"
-									onclick="location.href ='/member/MyPw' + '${memberId}'"
+									onclick="location.href ='/member/MyInformation'"
 									style="float: right; background-color: white; color: black; border-color:black ; font-weight: bolder;">내 정보 수정하기</button>
 							</div>
 

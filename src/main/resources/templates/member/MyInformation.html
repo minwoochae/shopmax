@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+
+</style>
+</th:block>
+<div layout:fragment="content">
+
+
+	<div
+		style="margin: 0 auto; justify-content: center; align-items: center; width: 780px; margin-top: 40px; margin-bottom: 50px;">
+		<form th:action="@{/member/MyInformation}" method="POST"  th:object="${member}">
+			<input type="hidden" id="memberId" th:value="${member.id}" /> <input
+				type="hidden" th:value="${member.email}" name="email" /> <input
+				type="hidden" th:value="${member.password}" name="password" />
+			<div style="display: flex;">
+				<h4
+					style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px;">이름</h4>
+				<div>
+					<label th:for="name" class="text-black"
+						style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
+					<input type="text" class="form-control" id="name" name="name" autocomplete="off"
+						style="width: 400px;" placeholder="Name" th:value="${member.name}">
+				</div>
+			</div>
+			<div style="display: flex;">
+				<h4
+					style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px;">이름</h4>
+				<div>
+					<label th:for="name" class="text-black"
+						style="width: 100%; justify-content: center; margin: 15px auto; align-items: center; font-size: 25px;"></label>
+					<input type="text" class="form-control" id="name" name="name" autocomplete="off"
+						style="width: 400px;" placeholder="Name" th:value="${member.address}">
+				</div>
+			</div>
+			
+			
+			<div style="display: flex;">
+				<h4
+					style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">이메일</h4>
+				<div>
+					<label th:for="email" class="text-black" th:text="${member.email}"
+						style="width: 100%; justify-content: center; align-items: center; font-size: 17px; margin-top: 42px"></label>
+
+				</div>
+			</div>
+
+
+
+
+
+			<div style="display: flex;">
+				<h4
+					style="font-weight: bolder; margin-top: 44px; width: 100px; margin-left: 100px">패스워드</h4>
+				<div>
+
+					<button type="button"
+						class="btn btn-danger waves-effect waves-light btnmember"
+						onclick="location.href ='/member/checkPwd'"
+						style="justify-content: center; align-items: center; font-size: 17px; margin-top: 38px">패스워드
+						변경하기</button>
+				</div>
+			</div>
+
+
+
+			<div class="btns">
+				<button type="button" class="btn"
+					onclick="location.href ='/member/mypage'">돌아가기</button>
+
+				<input type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}">
+				
+				<button type="submit" class="btn" 
+					style="background-color: #000; color: white;">수정하기</button>
+			</div>
+		</form>
+	</div>
+
+
+</div>
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+
+	</script>
+</th:block>
+</html>

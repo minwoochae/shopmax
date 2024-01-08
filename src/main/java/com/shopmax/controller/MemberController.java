@@ -118,6 +118,40 @@ public class MemberController {
 		}
 		
 		
+		
+		//내 정보 수정 
+		@GetMapping(value = "/member/MyInformation")
+		public String mainMyInformation( Model model, Principal principal) {
+
+			String members = principal.getName();
+			
+			Member member = memberservice.getMember(members);
+			
+			model.addAttribute("member", member);
+			
+			
+			if(principal != null) {
+			//카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		    model.addAttribute("Count", Count);
+			} 
+			return "member/MyInformation";
+		}
+		
+		// 카카오 이용자는 내 정보 수정이 불가능하여서 넣지 않아서 Authentication를 넣지 않음
+		@PostMapping("/member/MyInformation")
+		public String mypageupdate(@Valid String name, @Valid String address, Model model, Principal principal) {
+			String members = principal.getName();
+			
+			Member member = memberservice.getMember(members);
+			memberservice.updateNameAddress(member.getEmail(), name, address);
+			
+			return "redirect:/";
+		}
+		
+		
 		// 탈퇴하기
 		@DeleteMapping(value = "/member/{memberId}/delete")
 		public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
