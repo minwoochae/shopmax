@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopmax.Dto.MemberFormDto;
+import com.shopmax.Dto.PasswordDto;
 import com.shopmax.entity.Member;
 import com.shopmax.service.CartService;
 import com.shopmax.service.MemberService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 
@@ -161,6 +164,78 @@ public class MemberController {
 
 			return new ResponseEntity<Long>(memberId, HttpStatus.OK);
 		}
+		
+		@GetMapping("/member/checkPwd")
+		@NotBlank
+		public String checkPwdView(Model model , Principal principal) {
+			model.addAttribute("passwordDto", new PasswordDto());
+			//카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		    model.addAttribute("Count", Count);
+			
+			return "member/checkPwd";
+		}
+
+		// 회원 수정 전 비밀번호 확인 
+		@PostMapping(value = "/member/checkPwd")
+		public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
+
+			  if (passwordDto.getPassword() == null || passwordDto.getPassword().trim().isEmpty()) {
+			        model.addAttribute("errorMessage", "비밀번호 값이 입력되어 있지 않습니다..");
+			        return "member/checkPwd";
+			    }
+			Member member = memberservice.findByEmail(principal.getName());
+
+			boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
+
+			if (!result) {
+				model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+				return "member/checkPwd";
+			}
+
+			return "member/EditMember";
+		}
+		
+		// 내 비밀번호수정 (마이페이지에서)
+		@GetMapping(value = "/member/EditMember")
+		public String passwordupdate(Principal principal, Model model) {
+			Member member = memberservice.findByEmail(principal.getName());
+			model.addAttribute("member", member);
+			return "member/EditMember";
+		}
+
+		@PostMapping("/member/EditMember")
+		public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
+			Member members = memberservice.findByEmail(principal.getName());
+			if(principal != null) {
+				//카운트
+				Member mb = memberservice.getMember(principal.getName());
+				Long Count = cartService.cartCount(mb);
+			    // 모델에 상품 수를 추가합니다
+			    model.addAttribute("Count", Count);
+				} 
+			   if (password == null || password.trim().isEmpty()) {
+			        model.addAttribute("errorMessage", "비밀번호 값이 없습니다.");
+			        model.addAttribute("member", member);
+			        return "member/EditMember";
+			    }
+			    
+			
+			if (passwordEncoder.matches(password, members.getPassword()) == true) {
+				model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
+				model.addAttribute("member", member);
+				return "member/EditMember";
+			}
+			
+			else {
+				memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
+				return "redirect:/member/mypage";
+			}
+
+		}
+
 	//로그인 실패했을때
 	@GetMapping(value="/members/login/error")
 	public String loginError(Model model) {

@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,16 @@ public class MemberService implements UserDetailsService{
 		return getMembers; //
 	}
 	
+	//비밀번호 수정
+	public void updatepassword(String email, String password, PasswordEncoder passwordEncoder) {
+		Member member = memberRepository.findByEmail(email);
+
+		if (passwordEncoder.matches(password, member.getPassword()) == true) {
+			throw new IllegalStateException("기존 비밀번호와 동일합니다.");
+		} else {
+			member.updatepassword(password);
+		}
+	}
 	//이메일 중복채크
 	private void validateDuplicatMember(Member member) {
 		Member findMember = memberRepository.findByEmail(member.getEmail());
@@ -41,6 +52,14 @@ public class MemberService implements UserDetailsService{
 			throw new IllegalStateException("이미 가입된 회원입니다.");
 		}
 	}
+	
+	//이메일 찾기
+	public Member findByEmail(String email) {
+		Member member = memberRepository.findByEmail(email);
+	    return member;
+	}
+	
+	
 	public void deleteMember(Long memberId) {
 		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
 

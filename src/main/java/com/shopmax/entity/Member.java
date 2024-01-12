@@ -40,6 +40,10 @@ public class Member extends BaseEntity {
 		this.address = address;
 	}
 	
+	
+	public void updatepassword(String password) {
+		this.password = password;
+	}
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
 		
