@@ -96,7 +96,7 @@ public class CartService {
 			for(CartItem cartItem : cartItems) {
 				//상품의 대표 이미지 가져오기
 				ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
-					CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl());
+					CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl(), cartItem.getItem().getId());
 					cartHistDto.addCartItemDto(cartItemDto);
 					
 			}

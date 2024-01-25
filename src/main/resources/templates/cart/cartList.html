@@ -13,13 +13,22 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
-.img-fluid{
+.a-img-fluid{
 	width: 70px;
 	height: 100px;
+}
+.img-fluid{
+	width: 90px;
+	height: 120px;
 }
 .product-name{
 	width: 200px;
 }
+.btn-primary{
+	background-color: gray;
+	border:none;
+}
+
 
 </style>
 </th:block>
@@ -55,9 +64,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 							<tbody th:each="cartItem: ${cart.cartItemDtoList}">
 
 								<tr>
-									<td class="product-thumbnail"><img
+									<td class="product-thumbnail"><a class="a-img-fluid" th:href="'/item/' +${cartItem.itemId}"><img
 										th:src="${cartItem.imgUrl}" th:alt="${cartItem.itemNm}"
-										class="img-fluid"></td>
+										class="img-fluid">  </a></td>
 									<td class="product-name" th:text="${cartItem.itemNm}"></td>
 
 									<td class="price" id="price"
@@ -72,14 +81,14 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 
 									<td>
 										<button type="button" class="btn btn-primary"
-											th:value="${cart.cartId}" onclick="deleteCart(this.value)">삭제하기</button>
+											th:value="${cart.cartId}" onclick="deleteCart(this.value)">x</button>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					</form>
-						<nav style="margin-bottom: 50px"
+						<nav style=" margin:25px auto;"
 							th:with="start=${(carts.number/maxPage)*maxPage + 1}
 									,end=(${(carts.totalPages == 0) ? 1 : (start + (maxPage - 1) < carts.totalPages ? start + (maxPage - 1) : carts.totalPages)})"
 							aria-label="Page navigation example">

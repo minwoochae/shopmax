@@ -10,15 +10,18 @@ import lombok.Setter;
 public class CartItemDto {
 	
 	//앤티티 - > Dto로 바꿔준다.
-	public CartItemDto(CartItem cartItem, String imgUrl) {
+	public CartItemDto(CartItem cartItem, String imgUrl, Long itemId) {
 		this.itemNm = cartItem.getItem().getItemNm();
 		this.count = cartItem.getCount();
 		this.cartPrice =cartItem.getCartPrice();
 		this.imgUrl = imgUrl;
+		this.itemId = itemId;
 	}
 	
 	public String itemNm; //상품명
 	
+	
+	public Long itemId; //상품명
 	
 	public int count; //주문수량
 	
