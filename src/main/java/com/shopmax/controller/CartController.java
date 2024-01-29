@@ -73,8 +73,8 @@ public class CartController {
 		//1. 한페치지당 4개의 데이터를 가지고 오도록 설정
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 //		//2. 서비스 호출
-		System.out.println(principal.getName());
 		Page<CartHistDto> cartHistDtoList = cartService.getCartList(principal.getName() ,pageable);
+		
 //		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
 		model.addAttribute("carts",cartHistDtoList);
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
