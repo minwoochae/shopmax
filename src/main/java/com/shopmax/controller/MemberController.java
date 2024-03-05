@@ -1,7 +1,11 @@
 package com.shopmax.controller;
 
 import java.security.Principal;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shopmax.Dto.MemberFormDto;
 import com.shopmax.Dto.PasswordDto;
+import com.shopmax.Dto.QaDto;
 import com.shopmax.entity.Member;
+import com.shopmax.entity.Qa;
 import com.shopmax.service.CartService;
 import com.shopmax.service.MemberService;
 
@@ -33,11 +39,6 @@ public class MemberController {
 	private final MemberService memberservice;
 	private final CartService cartService;
 	private final PasswordEncoder passwordEncoder;
-	//문의하기
-	@GetMapping(value = "/members/qa")
-	public String qa() {
-		return "member/qa";
-	}
 	//로그인 화면
 	@GetMapping(value = "/members/login")
 	public String loginmember() {
@@ -235,6 +236,32 @@ public class MemberController {
 			}
 
 		}
+		//Q&A 리스트
+		@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
+		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+
+			Page<Qa> qa = memberservice.getqaPage(pageable);
+			model.addAttribute("qa", qa);
+			model.addAttribute("maxPage", 5);
+
+			return "member/QaList";
+		}
+		
+		//문의하기
+		@GetMapping(value = "/members/qa")
+		public String qa(Model model, Principal principal) {
+			String members = principal.getName();
+			Member member = memberservice.getMember(members);
+			
+			
+			model.addAttribute("member", member);
+			
+				
+			return "member/qa";
+		}
+		
+		
 
 	//로그인 실패했을때
 	@GetMapping(value="/members/login/error")

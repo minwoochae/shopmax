@@ -1,5 +1,11 @@
 package com.shopmax.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,8 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shopmax.Dto.QaDto;
 import com.shopmax.entity.Member;
+import com.shopmax.entity.Qa;
 import com.shopmax.repository.MemberRepository;
+import com.shopmax.repository.QaRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor  //@Autowired를 사용하지 않고 필드의 의존성 주입을 시켜준다.
 public class MemberService implements UserDetailsService{
 	private final MemberRepository memberRepository;
+	private final QaRepository qaRepository;
 	
 	//회원가입 데이터를 DB에 저장한다.
 	public Member saveMember(Member member) {
@@ -75,6 +85,12 @@ public class MemberService implements UserDetailsService{
 
 	}
 
+
+	@Transactional(readOnly = true)
+	public Page<Qa> getqaPage(Pageable pageable) {
+		return qaRepository.findAll(pageable);
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		//사용자가 입력한 email이 DB에 있는지 쿼리문을 사용한다.
@@ -91,5 +107,9 @@ public class MemberService implements UserDetailsService{
 				.roles(member.getRole().toString())
 				.build();
 	}
+	
+	
+	
+
 	
 } 

@@ -59,10 +59,7 @@ public class CartService {
 		CartItem cartItem = CartItem.createCartItem(item, cartDto.getCount());
 		cartItemList.add(cartItem);
 		
-		System.out.println(item.getId());
-		System.out.println(cartItem.getItem().getId());
 		//4. 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티를 생성
-		System.out.println(cartItemList);
 		Cart cart = Cart.createCart(member , cartItemList,item);
 		cartRepository.save(cart); //insert
 	
@@ -72,12 +69,7 @@ public class CartService {
 		}
 		
 	}
-	
-	
 
-
-
-	
 	//주문 목록을 가져오는 서비스
 	@Transactional(readOnly = true)
 	public Page<CartHistDto> getCartList(String email, Pageable pageable){

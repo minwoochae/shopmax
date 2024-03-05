@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+	.h3{
+	margin: 20px 25px;
+	}
+</style>
+</th:block>
+
+<div layout:fragment="content" style="height:1000px; margin-top:70px;">
+	
+	
+	<div class="container">
+	
+	<h2 class="h3 mb-3 text-black">문의하기</h2>
+	
+	<table
+		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
+		<tr style="border-top: solid 1.5px black; height:40px;">
+			<th style="padding-left: 15px">No.</th>
+			<th>제 목</th>
+			<th style="width: 150px">회원 이름</th>
+			<th style="margin: 0 auto; width: 200px">날짜</th>
+		</tr>
+		<tr th:each="qas : ${qa.content}"style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray;  height: 30px;">
+			<td style="padding-left: 15px;" th:text="${qas.id}"></td>
+			<td><a th:href="'/admin/profile/' + ${qas.id}"
+				th:text="${qas.email}"></a></td>
+			<td th:text="${qas.name}"></td>
+			<td th:text="${#temporals.format(qas.regtime , 'yyyy-MM-dd')}"></td>
+		</tr>
+	</table>
+
+	<nav style="margin-bottom: 50px"
+		th:with="start=${(qa.number/maxPage)*maxPage + 1}
+									,end=(${(qa.totalPages == 0) ? 1 : (start + (maxPage - 1) < qa.totalPages ? start + (maxPage - 1) : qa.totalPages)})"
+		aria-label="Page navigation example">
+		<ul class="pagination d-flex justify-content-center">
+			<li class="page-item" th:classappend="${qa.first}?'disabled'">
+				<a class="page-link"
+				th:onclick="'javascript:page(' + ${qa.number - 1} +')'"> 이전 </a>
+			</li>
+			<li class="page-item"
+				th:each="page: ${#numbers.sequence(start, end)}"
+				th:classappend="${qa.number eq page-1}?'active':''"><a
+				class="page-link" th:inline="text"
+				th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a></li>
+			<li class="page-item" th:classappend="${qa.last}?'disabled'">
+				<a class="page-link"
+				th:onclick="'javascript:page(' + ${qa.number + 1} +')'"> 다음 </a>
+			</li>
+		</ul>
+	</nav>
+
+</div>
+</div>
+
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	function page(pageNumber) {
+	    // 주소 이동
+	    location.href = "/qa/list/" + pageNumber;
+	}
+	</script>
+</th:block>
+</html>
