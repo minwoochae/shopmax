@@ -12,8 +12,17 @@
 <th:block layout:fragment="css">
 	<style>
 	.h3{
-	margin: 20px 25px;
+	margin: 35px 50px;
 	}
+	
+	.qabut{
+	border: none;
+	border-radius:6px;
+	padding: 5px 10px;
+	float: right;
+	margin-right: 30px;
+	}
+
 </style>
 </th:block>
 
@@ -25,7 +34,7 @@
 	<h2 class="h3 mb-3 text-black">문의하기</h2>
 	
 	<table
-		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 80px">
+		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 1150px; margin-bottom: 50px; height: 75px">
 		<tr style="border-top: solid 1.5px black; height:40px;">
 			<th style="padding-left: 15px">No.</th>
 			<th>제 목</th>
@@ -41,6 +50,7 @@
 		</tr>
 	</table>
 
+<div class="qabottom">
 	<nav style="margin-bottom: 50px"
 		th:with="start=${(qa.number/maxPage)*maxPage + 1}
 									,end=(${(qa.totalPages == 0) ? 1 : (start + (maxPage - 1) < qa.totalPages ? start + (maxPage - 1) : qa.totalPages)})"
@@ -60,8 +70,9 @@
 				th:onclick="'javascript:page(' + ${qa.number + 1} +')'"> 다음 </a>
 			</li>
 		</ul>
+	<input type="button" class="qabut" value="문의하기" onclick="window.location.href = '/members/qa';">
 	</nav>
-
+	</div>
 </div>
 </div>
 

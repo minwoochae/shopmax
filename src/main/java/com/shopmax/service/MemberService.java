@@ -76,6 +76,12 @@ public class MemberService implements UserDetailsService{
 		memberRepository.delete(member);
 	}
 	
+	
+	//회원가입 데이터를 DB에 저장한다.
+	public Qa saveQa(Qa qa) {
+		Qa savedMember = qaRepository.save(qa); //insert
+		return savedMember; //회원가입된 데이터를 리턴시켜준다.
+	}
 	//업데이트(내정보수정)
 	public void updateNameAddress(String email, String name, String address) {
 

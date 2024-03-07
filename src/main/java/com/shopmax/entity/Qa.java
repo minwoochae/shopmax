@@ -2,8 +2,13 @@ package com.shopmax.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.shopmax.Dto.MemberFormDto;
+import com.shopmax.Dto.QaDto;
 import com.shopmax.constant.CartStatus;
 import com.shopmax.constant.QandA;
+import com.shopmax.constant.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,9 +52,11 @@ public class Qa extends BaseEntity {
 	//질문
 	private String question;
 
-	public static Qa createQa(Member member) {
+
+	public static Qa createQa(QaDto qaDto) {
 		Qa qa =new Qa();
-		qa.setMember(member);
+		qa.setTitle(qaDto.getTitle());
+		qa.setQuestion(qaDto.getQuestion());
 		qa.setQaDate(LocalDateTime.now());
 		qa.setQaA(QandA.PROCESSING);
 		

@@ -251,14 +251,36 @@ public class MemberController {
 		//문의하기
 		@GetMapping(value = "/members/qa")
 		public String qa(Model model, Principal principal) {
-			String members = principal.getName();
+		/*	String members = principal.getName();
 			Member member = memberservice.getMember(members);
 			
 			
 			model.addAttribute("member", member);
 			
-				
+		*/		
 			return "member/qa";
+		}
+		
+		@PostMapping(value = "/members/qa")
+		public String postqa(@Valid QaDto qadto,
+				BindingResult bindingResult, Model model) {
+			//@valid: 유효성을 검증하려는 객체 앞에 붙인다.
+			//BindingResult: 유효성 검증 후의 결과가 들어있다.
+			
+			if(bindingResult.hasErrors()) {
+				return "qa/list";
+			}
+			
+			try {
+				//MemberFormDto -> Member Entity, 비밀번호 암호화
+				Qa qa = Qa.createQa(qadto);
+				memberservice.saveQa(qa);
+			} catch (IllegalStateException e) {
+				model.addAttribute("errorMessage", e.getMessage());
+				return "qa/list";
+			}
+			
+			return "redirect:/";
 		}
 		
 		
