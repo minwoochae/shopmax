@@ -128,7 +128,6 @@ public class MemberController {
 		public String mainMyInformation( Model model, Principal principal) {
 
 			String members = principal.getName();
-			
 			Member member = memberservice.getMember(members);
 			
 			model.addAttribute("member", member);
@@ -242,6 +241,7 @@ public class MemberController {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
 
 			Page<Qa> qa = memberservice.getqaPage(pageable);
+			System.out.println(qa);
 			model.addAttribute("qa", qa);
 			model.addAttribute("maxPage", 5);
 
@@ -256,14 +256,15 @@ public class MemberController {
 			
 			
 			model.addAttribute("member", member);
-			
 		*/		
+			
+			model.addAttribute("qaDto", new QaDto());
 			return "member/qa";
 		}
 		
 		@PostMapping(value = "/members/qa")
 		public String postqa(@Valid QaDto qadto,
-				BindingResult bindingResult, Model model) {
+				BindingResult bindingResult, Model model, Principal principal) {
 			//@valid: 유효성을 검증하려는 객체 앞에 붙인다.
 			//BindingResult: 유효성 검증 후의 결과가 들어있다.
 			
@@ -272,8 +273,11 @@ public class MemberController {
 			}
 			
 			try {
-				//MemberFormDto -> Member Entity, 비밀번호 암호화
-				Qa qa = Qa.createQa(qadto);
+				String members = principal.getName();
+				Member member = memberservice.getMember(members);
+				
+				Qa qa = Qa.createQa(qadto, member);
+				System.out.println(qa);
 				memberservice.saveQa(qa);
 			} catch (IllegalStateException e) {
 				model.addAttribute("errorMessage", e.getMessage());

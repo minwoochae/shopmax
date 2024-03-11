@@ -53,12 +53,13 @@ public class Qa extends BaseEntity {
 	private String question;
 
 
-	public static Qa createQa(QaDto qaDto) {
+	public static Qa createQa( QaDto qaDto, Member member) {
 		Qa qa =new Qa();
 		qa.setTitle(qaDto.getTitle());
 		qa.setQuestion(qaDto.getQuestion());
 		qa.setQaDate(LocalDateTime.now());
 		qa.setQaA(QandA.PROCESSING);
+		qa.setMember(member);
 		
 		return qa;
 	}
