@@ -142,8 +142,6 @@ public class MemberController {
 			} 
 			return "member/MyInformation";
 		}
-		
-		// 카카오 이용자는 내 정보 수정이 불가능하여서 넣지 않아서 Authentication를 넣지 않음
 		@PostMapping("/member/MyInformation")
 		public String mypageupdate(@Valid String name, @Valid String address, Model model, Principal principal) {
 			String members = principal.getName();
@@ -253,11 +251,8 @@ public class MemberController {
 		public String qa(Model model, Principal principal) {
 		/*	String members = principal.getName();
 			Member member = memberservice.getMember(members);
-			
-			
 			model.addAttribute("member", member);
 		*/		
-			
 			model.addAttribute("qaDto", new QaDto());
 			return "member/qa";
 		}
@@ -285,6 +280,21 @@ public class MemberController {
 			}
 			
 			return "redirect:/";
+		}
+		//문의 내용
+		@GetMapping(value = "/qa/list/{qaId}")
+		public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
+			QaDto qadtl =memberservice.getqaDtl(qaId);
+			System.out.println(qadtl.getId());
+			model.addAttribute("qa" ,qadtl);
+			if(principal != null) {
+			//카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		    model.addAttribute("Count", Count);
+			} 
+			return "member/qaDtl";
 		}
 		
 		

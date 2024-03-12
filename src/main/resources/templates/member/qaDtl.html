@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+	
+<head>
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+</style>
+</th:block>
+<div layout:fragment="content">
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="h3 mb-3 text-black">내 정보</h2>
+					<div class="p-3 p-lg-5 border">
+						<form role="form" action="/qa/list/{qaId}" method="get" th:object="${qa}">
+							<input type="hidden" id="memberId" th:value="${qa.Id}" />
+							<div class="info">
+							<div>제 목 : &nbsp;</div>
+							<div class="product-title" th:text="${qa.title}"></div>
+							</div>
+							<div>내 용 : &nbsp;</div>
+							<div class="product-title" th:text="${qa.question}"></div>
+							<div class="info">
+							<div >이메일 : &nbsp;</div>
+							<div class="product-email" th:text="${qa.member.email}"></div>
+							</div>
+
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+</div>
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+
+	</script>
+</th:block>
+</html>
