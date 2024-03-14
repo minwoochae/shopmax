@@ -43,7 +43,7 @@
 		</tr>
 		<tr th:each="qas : ${qa.content}"style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray;  height: 30px;">
 			<td style="padding-left: 15px;" th:text="${qas.id}"></td>
-			<td><a th:href="'/qa/list/' + ${qas.id}"
+			<td><a th:href="'/qa/lists/' + ${qas.id}"
 				th:text="${qas.title}"></a></td>
 			<td th:text="${qas.member.name}"></td>
 			<td th:text="${#temporals.format(qas.qaDate , 'yyyy-MM-dd')}"></td>

@@ -1,10 +1,9 @@
 package com.shopmax.service;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shopmax.Dto.ItemFormDto;
-import com.shopmax.Dto.ItemImgDto;
 import com.shopmax.Dto.QaDto;
-import com.shopmax.entity.Item;
-import com.shopmax.entity.ItemImg;
 import com.shopmax.entity.Member;
 import com.shopmax.entity.Qa;
 import com.shopmax.repository.MemberRepository;
@@ -95,10 +90,15 @@ public class MemberService implements UserDetailsService{
 
 	}
 	
+	//이메일 찾기
+	public Optional<Qa> getQaById(Long qaId) {
+		Optional<Qa> qa = qaRepository.findById(qaId);
+	    return qa;
+	}
+	
 	@Transactional(readOnly = true) // 트랜잭션 읽기 전용(변경감지 수행하지 않음) -> 성능 향상
 	public QaDto getqaDtl(Long qaId) {
-		Qa qa = qaRepository.findById(qaId)
-								  .orElseThrow(EntityNotFoundException::new);
+		Qa qa = qaRepository.findById(qaId).orElseThrow(EntityNotFoundException::new);
 		QaDto qad = QaDto.of(qa);
 		return qad;		
 	}

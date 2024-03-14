@@ -281,23 +281,28 @@ public class MemberController {
 			
 			return "redirect:/";
 		}
-		//문의 내용
-		@GetMapping(value = "/qa/list/{qaId}")
+		@GetMapping(value = "/qa/lists/{qaId}")
 		public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
-			QaDto qadtl =memberservice.getqaDtl(qaId);
-			System.out.println(qadtl.getId());
-			model.addAttribute("qa" ,qadtl);
-			if(principal != null) {
-			//카운트
-			Member mb = memberservice.getMember(principal.getName());
-			Long Count = cartService.cartCount(mb);
-		    // 모델에 상품 수를 추가합니다
-		    model.addAttribute("Count", Count);
-			} 
-			return "member/qaDtl";
+		    QaDto qadtl = memberservice.getqaDtl(qaId);
+		    
+		    model.addAttribute("qa", qadtl);
+		    Optional<Qa> qaa = memberservice.getQaById(qaId);
+		    System.out.println(qaa);
+		    model.addAttribute("member", qaa);
+		    
+		    
+		    if (principal != null) {
+		        // 카운트
+		        Member mb = memberservice.getMember(principal.getName());
+		        Long Count = cartService.cartCount(mb);
+		        // 모델에 상품 수를 추가합니다
+		        model.addAttribute("Count", Count);
+		    }
+		    return "member/qaDtl";
 		}
 		
 		
+
 
 	//로그인 실패했을때
 	@GetMapping(value="/members/login/error")
