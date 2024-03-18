@@ -10,35 +10,58 @@
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
+.border {
+	border: 2px solid #007bff;
+	border-radius: 10px;
+}
+
+.info {
+	margin-bottom: 20px;
+}
+
+.info div {
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.product-title {
+	color: #333;
+}
+
+.cen {
+	margin: 0 auto;
+	max-width: 1040px;
+}
+
+.row {
+	margin-top: 100px;
+}
 </style>
 </th:block>
 <div layout:fragment="content">
 	<div class="row">
-		<div class="col-md-12">
-			<h2 class="h3 mb-3 text-black">내 정보</h2>
+		<div class="col-md-12 cen">
+			<h2 class="h3 mb-3 text-black">문의 내용</h2>
 			<div class="p-3 p-lg-5 border">
 				<form role="form" action="/qa/lists/{qaId}" method="get"
 					th:object="${qa}">
 					<input type="hidden" id="qaId" th:value="${qa.Id}" />
 					<div class="info">
-						<div>제 목 : &nbsp;</div>
-						<div class="product-title" th:text="${qa.title}"></div>
+						<div class="font-weight-bold">제목:</div>
+						<div th:text="${qa.title}"></div>
 					</div>
 					<div class="info">
-						<div>내 용 : &nbsp;</div>
-						<div class="product-title" th:text="${qa.question}"></div>
+						<div class="font-weight-bold">내용:</div>
+						<div th:text="${qa.question}"></div>
 					</div>
 					<div class="info">
-						<div>이메일 : &nbsp;</div>
-						<p>Email: <span th:text="${member.email}"></span></p>
-						<!-- <div class="product-email" th:text="${qas.member.email}"></div>
-					 --></div>
-
-
-
+						<div class="font-weight-bold">작성자 이메일:</div>
+						<div th:text="${qa.member.email}"></div>
+					</div>
 				</form>
 			</div>
 		</div>
+
 	</div>
 </div>
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
