@@ -1,99 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
 <head>
-    <!-- 각 페이지의 CSS가 작성될 위치 -->
-    <th:block layout:fragment="css">
-        <style>
-            .form-control-title {
-                width: 650px;
-                height: 45px;
-            }
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+.form-control-title {
+	width: 650px;
+	height: 45px;
+}
 
-            .form-control-question {
-                width: 650px;
-                height: 100px;
-            }
-        </style>
-    </th:block>
+.form-control-question {
+	width: 650px;
+	height: 100px;
+}
+</style>
+</th:block>
 </head>
 <body>
-<div layout:fragment="content">
-    <div class="site-blocks-cover inner-page"
-         style="background-image: url('/images/hero_2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center"
-         data-aos="fade">
-        <div class="container">
-            <div class="row"></div>
-        </div>
-    </div>
-    <div class="custom-border-bottom py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 mb-0">
-                    <a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong
-                        class="text-black">Q&A</strong>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="site-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="h3 mb-3 text-black">문의 사항</h2>
-                </div>
-                <div class="col-md-7">
-                    <form role="form" action="/members/qa" method="post" th:object="${qaDto}">
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label th:for="title" class="text-black">제 목</label>
-                                <input type="text" class="form-control-title" placeholder="제목를 입력해주세요"
-                                       th:field="*{title}" oninput="checkTitleLength(this)">
-                                <p id="title-error" style="color: red; display: none;">제목은 최대 15자까지 입력 가능합니다.</p>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label th:for="question" class="text-black">내 용</label>
-                                <textarea class="form-control-question" placeholder="내용을 입력해주세요"
-                                          th:field="*{question}" oninput="checkQuestionLength(this)"></textarea>
-                                <p id="question-error" style="color: red; display: none;">내용은 최대 200자까지 입력 가능합니다.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn mb-3">문의하기</button>
-                            </div>
-                        </div>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 각 페이지의 스크립트가 작성될 위치 -->
-<th:block layout:fragment="script">
-    <script>
-        function checkTitleLength(input) {
-            var maxLength = 15; // 제목 최대 글자수
-            if (input.value.length > maxLength) {
-                document.getElementById("title-error").style.display = "block";
-                alert("제목은 최대 15자까지 입력 가능합니다.");
-            } else {
-                document.getElementById("title-error").style.display = "none";
-            }
-        }
+	<div layout:fragment="content">
+		<div class="site-blocks-cover inner-page"
+			style="background-image: url('/images/hero_2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center"
+			data-aos="fade">
+			<div class="container">
+				<div class="row"></div>
+			</div>
+		</div>
+		<div class="custom-border-bottom py-3">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 mb-0">
+						<a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong
+							class="text-black">Q&A</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="site-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h2 class="h3 mb-3 text-black">문의 사항</h2>
+					</div>
+					<div class="col-md-7">
+						<form role="form" action="/members/qa" method="post"
+							th:object="${qaDto}">
+							<div class="form-group row">
+								<select name="inquirytype" th:field="*{inquirytype}"
+									onchange="checkInquirytype(this)">
+									<option value="결재/환불">결재/환불</option>
+									<option value="에러" selected="selected">에러</option>
+									<option value="교환">교환</option>
+									<option value="기타">기타</option>
+								</select>
 
-        function checkQuestionLength(input) {
-            var maxLength = 200; // 내용 최대 글자수
-            if (input.value.length > maxLength) {
-                document.getElementById("question-error").style.display = "block";
-                alert("내용은 최대 200자까지 입력 가능합니다.");
-            } else {
-                document.getElementById("question-error").style.display = "none";
-            }
-        }
-    </script>
-</th:block>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-12">
+									<label th:for="title" class="text-black">제 목</label> <input
+										type="text" class="form-control-title"
+										placeholder="제목를 입력해주세요" th:field="*{title}"
+										oninput="checkTitleLength(this)">
+									<p id="title-error" style="color: red; display: none;">제목은
+										최대 15자까지 입력 가능합니다.</p>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-12">
+									<label th:for="question" class="text-black">내 용</label>
+									<textarea class="form-control-question"
+										placeholder="내용을 입력해주세요" th:field="*{question}"
+										oninput="checkQuestionLength(this)"></textarea>
+									<p id="question-error" style="color: red; display: none;">내용은
+										최대 200자까지 입력 가능합니다.</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-md-12">
+									<button type="submit" class="btn mb-3">문의하기</button>
+								</div>
+							</div>
+							<input type="hidden" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 각 페이지의 스크립트가 작성될 위치 -->
+	<th:block layout:fragment="script">
+		<script>
+		
+		var errorMessage = [[${errorMessage}]];
+		
+		if(errorMessage != null){
+			alert(errorMessage);
+		}
+		
+	
+			function checkTitleLength(input) {
+				var maxLength = 15; // 제목 최대 글자수
+				if (input.value.length > maxLength) {
+					document.getElementById("title-error").style.display = "block";
+					alert("제목은 최대 15자까지 입력 가능합니다.");
+				} else {
+					document.getElementById("title-error").style.display = "none";
+				}
+			}
+
+			function checkQuestionLength(input) {
+				var maxLength = 200; // 내용 최대 글자수
+				if (input.value.length > maxLength) {
+					document.getElementById("question-error").style.display = "block";
+					alert("내용은 최대 200자까지 입력 가능합니다.");
+				} else {
+					document.getElementById("question-error").style.display = "none";
+				}
+			}
+
+		
+		</script>
+	</th:block>
 </body>
 </html>

@@ -281,13 +281,17 @@ public class MemberController {
 			
 			return "redirect:/";
 		}
+		
+		//문의하기 dtl
 		@GetMapping(value = "/qa/lists/{qaId}")
 		public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
 		    QaDto qadtl = memberservice.getqaDtl(qaId);
 		    
 		    model.addAttribute("qa", qadtl);
 		    Optional<Qa> qaa = memberservice.getQaById(qaId);
-		    System.out.println(qaa);
+		    System.out.println(qadtl.getMember().getEmail());
+		    System.out.println(principal.getName());
+		    System.out.println(qadtl.getMember().getEmail().equals(principal.getName()) );
 		    model.addAttribute("member", qaa);
 		    
 		    

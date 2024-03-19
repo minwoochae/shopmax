@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import com.shopmax.entity.Member;
 import com.shopmax.entity.Qa;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,10 @@ public class QaDto {
 	private String qaDate;
 
 	private String title;
+	
+	@NotBlank(message = "문의 유형을 선택해주세요.")
+	private String inquirytype;
+;
 
 	private String question;
 
@@ -41,6 +46,11 @@ public class QaDto {
             this.question = question;
         }
     }
+
+    
+    
+    
+    
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	// entity -> dto로 바꿈

@@ -48,7 +48,9 @@ public class Qa extends BaseEntity {
 	
 	//제목
 	private String title;
-	
+
+	//문의 유형
+	private String inquirytype;
 	//질문
 	private String question;
 
@@ -57,6 +59,7 @@ public class Qa extends BaseEntity {
 		Qa qa =new Qa();
 		qa.setTitle(qaDto.getTitle());
 		qa.setQuestion(qaDto.getQuestion());
+		qa.setInquirytype(qaDto.getInquirytype());
 		qa.setQaDate(LocalDateTime.now());
 		qa.setQaA(QandA.PROCESSING);
 		qa.setMember(member);

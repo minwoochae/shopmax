@@ -10,23 +10,29 @@
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
+	.text-black{
+		border-bottom: 2px solid black;
+		padding-bottom: 15px 
+	}
 .border {
 	border: 2px solid #007bff;
-	border-radius: 10px;
 }
 
 .info {
-	margin-bottom: 20px;
-}
+	margin-bottom: 23px;
 
+}
 .info div {
 	font-weight: bold;
 	margin-right: 10px;
+	margin: 0 auto;
+
 }
 
-.product-title {
-	color: #333;
+.info div:nth-child(1) {
+	width: 100px;
 }
+
 
 .cen {
 	margin: 0 auto;
@@ -35,6 +41,27 @@
 
 .row {
 	margin-top: 100px;
+}
+
+.title {
+	display: inline-block !important;
+}
+
+.name {
+	display:  inline-block !important;
+}
+.question{
+display: inline-block !important;
+}
+.font-weight-bold {
+	border-top: solid 1px gray;
+	border-bottom: solid 1px gray;
+	padding: 16px;
+}
+
+.titletext{
+	border: 1px solid #;
+		padding: 16px;
 }
 </style>
 </th:block>
@@ -46,17 +73,17 @@
 				<form role="form" action="/qa/lists/{qaId}" method="get"
 					th:object="${qa}">
 					<input type="hidden" id="qaId" th:value="${qa.Id}" />
-					<div class="info">
-						<div class="font-weight-bold">제목:</div>
-						<div th:text="${qa.title}"></div>
+					<div class="info titleinfo">
+						<div class="font-weight-bold title">제목</div>
+						<div class="title titletext" th:text="${qa.title}"></div>
 					</div>
-					<div class="info">
-						<div class="font-weight-bold">내용:</div>
-						<div th:text="${qa.question}"></div>
+					<div class="info nameinfo">
+						<div class="font-weight-bold name">작성자</div>
+						<div class="name nametext" th:text="${qa.member.name}"></div>
 					</div>
-					<div class="info">
-						<div class="font-weight-bold">작성자 이메일:</div>
-						<div th:text="${qa.member.email}"></div>
+					<div class="info questioninfo">
+						<div class="font-weight-bold question">내용</div>
+						<div class="question questiontext" th:text="${qa.question}"></div>
 					</div>
 				</form>
 			</div>
