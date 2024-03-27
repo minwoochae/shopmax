@@ -84,7 +84,7 @@
          <groupId>nz.net.ultraq.thymeleaf</groupId>
          <artifactId>thymeleaf-layout-dialect</artifactId>
       </dependency>
-        <dependency>
+              <dependency>
          <groupId>com.querydsl</groupId>
          <artifactId>querydsl-jpa</artifactId>
          <version>5.0.0</version>
@@ -92,9 +92,9 @@
       </dependency>
       <dependency>
          <groupId>com.querydsl</groupId>
-         <artifactId>querydsl-apt</artifactId>
-          <version>5.0.0</version>
-         <classifier>jakarta</classifier>
+         <artifactId>querydsl-core</artifactId>
+          <version>4.3.1</version>
+          <!-- <classifier>jakarta</classifier> -->
       </dependency>
       <dependency>
          <groupId>org.springframework.boot</groupId>
@@ -126,6 +126,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <configuration>
+                <jvmArguments>-Xms2048m -Xmx4096m</jvmArguments>
                <excludes>
                   <exclude>
                      <groupId>org.projectlombok</groupId>
@@ -148,7 +149,14 @@
                      <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                   </configuration>
                </execution>
-            </executions>
+       </executions>
+                       <dependencies>
+                    <dependency>
+                        <groupId>com.querydsl</groupId>
+                        <artifactId>querydsl-apt</artifactId>
+                        <version>4.3.1</version>
+                    </dependency>
+                </dependencies>
          </plugin>
       </plugins>
    </build>
