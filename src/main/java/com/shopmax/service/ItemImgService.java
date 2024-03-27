@@ -1,5 +1,6 @@
 package com.shopmax.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class ItemImgService {
-	private String itemImgLocation = "C:/shop/item";
+	
+//	private String itemImgLocation = "C:/shop/item";
+	
+	@Value("${itemImgLocation}")
+	private String itemImgLocation;
 	
 	private final ItemImgRepository  itemImgRepository;
 	private final FileService fileService;

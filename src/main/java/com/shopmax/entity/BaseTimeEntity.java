@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 
-@EntityListeners(value = (AuditingEntityListener.class)) //Auditing를 적용하기 
+@EntityListeners(value = AuditingEntityListener.class) //Auditing를 적용하기
 @MappedSuperclass //부모 클래스를 상속받는 자식 클래스한테 매핑정보를 제공하기 위해 사용
 @Getter
 @Setter

@@ -9,7 +9,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 
-@EntityListeners(value = (AuditingEntityListener.class))
+@EntityListeners(value = AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
 @Setter
