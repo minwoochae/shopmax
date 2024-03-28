@@ -2,6 +2,8 @@ package com.shopmax.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -80,7 +82,13 @@ public class ItemService {
 			
 			return itemFormDto;		
 		}
-	
+	//이메일 찾기
+	public Optional<Item> findById(Long id) {
+		Optional<Item> itemid = itemRepository.findById(id);
+
+		return itemid;
+	}
+
 	public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
 		//1.item 앤티티 가져와서 바꾼다.
 		Item item = itemRepository.findById(itemFormDto.getId())

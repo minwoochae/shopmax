@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import com.shopmax.entity.Item;
+import com.shopmax.service.ItemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +41,7 @@ import lombok.RequiredArgsConstructor;
 public class CartController {
 	private final CartService cartService;
 	private final MemberService memberService;
-	
+	private final ItemService itemService;
 	@PostMapping(value = "/cart")
 	public @ResponseBody ResponseEntity cartList(@RequestBody @Valid CartDto cartDto,
 			BindingResult bindingResult , Principal principal) {
@@ -72,19 +74,18 @@ public class CartController {
 			Principal principal, Model model) {
 		//1. 한페치지당 4개의 데이터를 가지고 오도록 설정
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
-//		//2. 서비스 호출
+		//2. 서비스 호출
 		Page<CartHistDto> cartHistDtoList = cartService.getCartList(principal.getName() ,pageable);
-		
-//		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
+
+		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
 		model.addAttribute("carts",cartHistDtoList);
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
 		
-		
+
+
 		//카운트
 		Member members = memberService.getMember(principal.getName());
-		
 		Long Count = cartService.cartCount(members);
-		
 	    // 모델에 상품 수를 추가합니다
 	    model.addAttribute("Count", Count);
 		

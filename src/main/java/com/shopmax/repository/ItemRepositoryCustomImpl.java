@@ -6,11 +6,12 @@ import java.util.List;
 import com.shopmax.Dto.QMainItemDto;
 import com.shopmax.entity.QItem;
 import com.shopmax.entity.QItemImg;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
-
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,13 +19,11 @@ import com.shopmax.constant.ItemSellStatus;
 import com.shopmax.Dto.ItemSearchDto;
 import com.shopmax.Dto.MainItemDto;
 import com.shopmax.entity.Item;
-//import com.shopmax.entity.QItem;
-//import com.shopmax.entity.QItemImg;
 import com.shopmax.Dto.*;
 
 import jakarta.persistence.EntityManager;
-
-public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
+@Component
+public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
 	private JPAQueryFactory queryFactory;
 
@@ -94,12 +93,12 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
 	@Override
 	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-		/*select item_id, item.itemNm , item.itemDetail, item_img.imgUrl, item.price
+		/* select item_id, item.itemNm , item.itemDetail, item_img.imgUrl, item.price
 		 *from item, item_img
 		 *where item.item_id = item_img.item_id
 		 *and item_img.repimg_yn = 'Y'
 		 *and item.item_nm like '%검색어%'
-		 *order by item.item_id desc;
+		 order by item.item_id desc;
 		 * */
 
 		QItem item = QItem.item;
@@ -136,6 +135,5 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
 		return new PageImpl<>(content, pageable, total);
 	}
-
 
 }

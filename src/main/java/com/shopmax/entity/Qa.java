@@ -2,6 +2,8 @@ package com.shopmax.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.shopmax.Dto.MemberFormDto;
@@ -38,7 +40,8 @@ public class Qa extends BaseEntity {
 	
 	@Enumerated(EnumType.STRING)
 	private QandA QaA;
-	
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime qaDate;
 	
 	@ManyToOne(fetch =FetchType.LAZY)

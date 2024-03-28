@@ -52,7 +52,7 @@ public class Member extends BaseEntity {
 		member.setEmail(memberFormDto.getEmail());
 		member.setAddress(memberFormDto.getAddress());
 		member.setPassword(password);
-		member.setRole(Role.ADMIN);
+		member.setRole(Role.USER);
 		
 		return member;
 	}

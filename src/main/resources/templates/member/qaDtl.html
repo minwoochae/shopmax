@@ -11,8 +11,9 @@
 <th:block layout:fragment="css">
 	<style>
 	.text-black{
-		border-bottom: 2px solid black;
-		padding-bottom: 15px 
+		border-bottom: 1px solid gray;
+		padding-bottom: 15px;
+		padding: 15px;
 	}
 .border {
 	border: 2px solid #007bff;
@@ -20,19 +21,19 @@
 
 .info {
 	margin-bottom: 23px;
-
+	border-bottom: rgba(11, 11, 11, 0.66) solid 2px;
+	height: 80px;
+	padding:  0 15px;
+}
+.questioninfo{
+	padding:  10px 15px;
+	height: 200px;
+	box-shadow: 0 2px 6px rgba(166, 165, 165, 0.89);
 }
 .info div {
 	font-weight: bold;
 	margin-right: 10px;
-	margin: 0 auto;
-
 }
-
-.info div:nth-child(1) {
-	width: 100px;
-}
-
 
 .cen {
 	margin: 0 auto;
@@ -45,22 +46,29 @@
 
 .title {
 	display: inline-block !important;
+	font-size: 32px;
+	height: 45px;
+	color: rgba(0, 0, 0, 0.52);
 }
-
-.name {
+	.date{
+		display:  inline-block !important;
+	}
+.texts > div {
+	font-size:14px ;
+}
+	.name {
 	display:  inline-block !important;
 }
+
 .question{
 display: inline-block !important;
 }
 .font-weight-bold {
-	border-top: solid 1px gray;
-	border-bottom: solid 1px gray;
 	padding: 16px;
 }
 
 .titletext{
-	border: 1px solid ;
+
 		padding: 16px;
 }
 </style>
@@ -68,22 +76,22 @@ display: inline-block !important;
 <div layout:fragment="content">
 	<div class="row">
 		<div class="col-md-12 cen">
-			<h2 class="h3 mb-3 text-black">문의 내용</h2>
+			<h2 class="h3 mb-3 text-black">문의 상세보기</h2>
 			<div class="p-3 p-lg-5 border">
 				<form role="form" action="/qa/lists/{qaId}" method="get"
 					th:object="${qa}">
 					<input type="hidden" id="qaId" th:value="${qa.Id}" />
-					<div class="info titleinfo">
-						<div class="font-weight-bold title">제목</div>
-						<div class="title titletext" th:text="${qa.title}"></div>
+					<div class="info ">
+						<div>
+							<div class="title" th:text="${qa.title}"></div>
+						</div>
+						<div class="texts">
+							<div class="name" th:text="${qa.member.email}"></div>
+							<div class="date" th:text="${#temporals.format(qa.qaDate , 'yyyy-MM-dd')}"></div>
+						</div>
 					</div>
-					<div class="info nameinfo">
-						<div class="font-weight-bold name">작성자</div>
-						<div class="name nametext" th:text="${qa.member.name}"></div>
-					</div>
-					<div class="info questioninfo">
-						<div class="font-weight-bold question">내용</div>
-						<div class="question questiontext" th:text="${qa.question}"></div>
+					<div class="questioninfo">
+						<div class="question" th:text="${qa.question}"></div>
 					</div>
 				</form>
 			</div>

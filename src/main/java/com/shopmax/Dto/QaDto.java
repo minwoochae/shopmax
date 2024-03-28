@@ -8,11 +8,13 @@ import com.shopmax.entity.Qa;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
 public class QaDto {
 	private Long id;
+
 
 	private String qaDate;
 

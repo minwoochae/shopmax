@@ -11,7 +11,6 @@
    <groupId>com.example</groupId>
    <artifactId>shopmax</artifactId>
    <version>0.0.1-SNAPSHOT</version>
-   <packaging>war</packaging>
    <name>shopmax</name>
    <description>Demo project for Spring Boot</description>
    <properties>
@@ -84,7 +83,7 @@
          <groupId>nz.net.ultraq.thymeleaf</groupId>
          <artifactId>thymeleaf-layout-dialect</artifactId>
       </dependency>
-              <dependency>
+        <dependency>
          <groupId>com.querydsl</groupId>
          <artifactId>querydsl-jpa</artifactId>
          <version>5.0.0</version>
@@ -92,9 +91,9 @@
       </dependency>
       <dependency>
          <groupId>com.querydsl</groupId>
-         <artifactId>querydsl-core</artifactId>
-          <version>4.3.1</version>
-          <!-- <classifier>jakarta</classifier> -->
+         <artifactId>querydsl-apt</artifactId>
+          <version>5.0.0</version>
+         <classifier>jakarta</classifier>
       </dependency>
       <dependency>
          <groupId>org.springframework.boot</groupId>
@@ -118,6 +117,11 @@
          <artifactId>spring-boot-starter-tomcat</artifactId>
          <scope>provided</scope>
       </dependency>
+      <dependency>
+         <groupId>com.example</groupId>
+         <artifactId>shopmax</artifactId>
+         <version>0.0.1-SNAPSHOT</version>
+      </dependency>
    </dependencies>
 
    <build>
@@ -126,7 +130,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <configuration>
-                <jvmArguments>-Xms2048m -Xmx4096m</jvmArguments>
                <excludes>
                   <exclude>
                      <groupId>org.projectlombok</groupId>
@@ -149,14 +152,7 @@
                      <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                   </configuration>
                </execution>
-       </executions>
-                       <dependencies>
-                    <dependency>
-                        <groupId>com.querydsl</groupId>
-                        <artifactId>querydsl-apt</artifactId>
-                        <version>4.3.1</version>
-                    </dependency>
-                </dependencies>
+            </executions>
          </plugin>
       </plugins>
    </build>

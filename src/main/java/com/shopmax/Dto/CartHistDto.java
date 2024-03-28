@@ -22,13 +22,15 @@ public class CartHistDto {
 	private CartStatus cartStatus;
 	
 	private List<CartItemDto> cartItemDtoList = new ArrayList<>();
-	
-	
-	
+
+	private Long itemId;
+
+
 	public CartHistDto(Cart cart) {
 		this.cartId = cart.getId();
 		this.cartDate = cart.getCartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		this.cartStatus = cart.getCartStatus();
+		this.itemId = cart.getItem().getId();
 	}
 	
 	//orderItemDto 객체를 주문 상품 리스트에 추가 하는 메소드

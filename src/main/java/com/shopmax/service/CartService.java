@@ -3,6 +3,7 @@ package com.shopmax.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,11 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class CartService {
+
+
+	@Lazy
 	private final ItemRepository itemRepository;
+
 	private final MemberRepository memberRepository;
 	private final CartRepository cartRepository;
 	private final ItemImgRepository itemImgRepository;
@@ -90,7 +95,7 @@ public class CartService {
 				ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
 					CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl(), cartItem.getItem().getId());
 					cartHistDto.addCartItemDto(cartItemDto);
-					
+
 			}
 			cartHistDtos.add(cartHistDto);
 		}

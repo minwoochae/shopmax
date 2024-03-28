@@ -233,26 +233,18 @@ public class MemberController {
 			}
 
 		}
-		//Q&A 리스트
-		@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
-		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model) {
-			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
 
-			Page<Qa> qa = memberservice.getqaPage(pageable);
-			System.out.println(qa);
-			model.addAttribute("qa", qa);
-			model.addAttribute("maxPage", 5);
-
-			return "member/QaList";
-		}
 		
 		//문의하기
 		@GetMapping(value = "/members/qa")
 		public String qa(Model model, Principal principal) {
-		/*	String members = principal.getName();
-			Member member = memberservice.getMember(members);
-			model.addAttribute("member", member);
-		*/		
+			if (principal != null) {
+				// 카운트
+				Member mb = memberservice.getMember(principal.getName());
+				Long Count = cartService.cartCount(mb);
+				// 모델에 상품 수를 추가합니다
+				model.addAttribute("Count", Count);
+			}
 			model.addAttribute("qaDto", new QaDto());
 			return "member/qa";
 		}
@@ -281,20 +273,35 @@ public class MemberController {
 			
 			return "redirect:/";
 		}
+		//Q&A 리스트
+		@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
+		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model, Principal principal) {
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+
+			Page<Qa> qa = memberservice.getqaPage(pageable);
+			System.out.println(qa);
+			model.addAttribute("qa", qa);
+			model.addAttribute("maxPage", 5);
+			if (principal != null) {
+				// 카운트
+				Member mb = memberservice.getMember(principal.getName());
+				Long Count = cartService.cartCount(mb);
+				// 모델에 상품 수를 추가합니다
+				model.addAttribute("Count", Count);
+			}
+
+			return "member/QaList";
+		}
 		
 		//문의하기 dtl
 		@GetMapping(value = "/qa/lists/{qaId}")
 		public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
 		    QaDto qadtl = memberservice.getqaDtl(qaId);
-		    
-		    model.addAttribute("qa", qadtl);
+		    model.addAttribute("qaDetail", qadtl);
+		    // Qa 가져오기
 		    Optional<Qa> qaa = memberservice.getQaById(qaId);
-		    System.out.println(qadtl.getMember().getEmail());
-		    System.out.println(principal.getName());
-		    System.out.println(qadtl.getMember().getEmail().equals(principal.getName()) );
-		    model.addAttribute("member", qaa);
-		    
-		    
+		    qaa.ifPresent(qa -> model.addAttribute("qa", qa)); // Optional에서 Qa 객체 추출하여 모델에 추가
+
 		    if (principal != null) {
 		        // 카운트
 		        Member mb = memberservice.getMember(principal.getName());

@@ -58,12 +58,13 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 									<th class="product-price">Price</th>
 									<th class="product-quantity">Quantity</th>
 									<th class="product-total">Total</th>
+									<th class="product-remove">Buy</th>
 									<th class="product-remove">Remove</th>
 								</tr>
 							</thead>
 							<tbody th:each="cartItem: ${cart.cartItemDtoList}">
-
 								<tr>
+
 									<td class="product-thumbnail"><a class="a-img-fluid" th:href="'/item/' +${cartItem.itemId}"><img
 										th:src="${cartItem.imgUrl}" th:alt="${cartItem.itemNm}"
 										class="img-fluid">  </a></td>
@@ -72,17 +73,28 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 									<td class="price" id="price"
 										th:text="${#numbers.formatInteger(cartItem.cartPrice, 0, 'COMMA')}+'원'"></td>
 
-									<td class="count" id="count" th:text="${cartItem.count}"></td>
+									<td class="count"   th:text="${cartItem.count}"></td>
 
 									<td id="'totalPrice"
 										th:text="'총' +  '  ' + ${#numbers.formatDecimal(cartItem.count * cartItem.cartPrice, 0, 'DEFAULT', 0, 'DEFAULT')} + '원'">
+									</td>
+									<td>
+										<input type="hidden" id="itemId" th:value="${cartItem.itemId}">
+										<input type="hidden" id="cartId" th:value="${cart.cartId}">
+										<input type="hidden" id="count" name="count" th:value="${cartItem.count}">
+									<!--	<p th:if="${#strings.equals(item.itemSellStatus, 'SELL')}">-->
+											<button type="button" class="btn btn-primary btn-lg"
+													onclick="order()">주문하기</button>
+										<!--</p>
+									<p th:unless="${#strings.equals(item.itemSellStatus, 'SELL')}">해당 상품은 현재 품절입니다.</p>-->
 
 									</td>
-
 									<td>
 										<button type="button" class="btn btn-primary"
 											th:value="${cart.cartId}" onclick="deleteCart(this.value)">x</button>
 									</td>
+
+
 							
 								</tr>
 							</tbody>
@@ -136,6 +148,84 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 			var totalPrice = (price * count).toLocaleString('ko-KR'); //천단위 콤마
 			$("#totalPrice").html(totalPrice + '원'); //총가격 출력
 
+		}
+
+		function order() {
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+			var url = "/order/item";
+
+			//controller(서버)에 전달할 데이터
+			var paramData = {
+				itemId : $("#itemId").val(), //item에 id
+				count : $("#count").val() ,//수량
+				cartId : $("#cartId").val() //cart에 id
+			}
+
+			//*전달하기 전에 데이터를 JSON ->문자 번호 만들어야 한다.
+			var param = JSON.stringify(paramData);
+
+			$.ajax({
+				url : url, //request URL
+				type :"POST", //전송방식
+				contentType : "application/json",
+				data : param, //서버에 전송할 데이터
+				beforeSend : function(xhr) {
+					//데이터를 전송하기전에 헤더에 csrf값을 설정
+					xhr.setRequestHeader(header,token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					deleteCartitem($("#cartId").val());
+					alert("주문이 완료 되었습니다.")
+					//location.href = '/';
+
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401'){
+						alert('로그인 후 이용해주세요.')
+						location.href = '/members/login';
+					}else{
+						//에러메세지 출력(ResponseEntity에서 받아온 값을 출력해준다.)
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+		function deleteCartitem(cartId) {
+
+			var token = $("meta[name='_csrf']").attr("content");
+			var header = $("meta[name='_csrf_header']").attr("content");
+
+			var url = "/cart/" + cartId + "/delete";
+
+			$.ajax({
+				url : url,
+				type : "DELETE", //전송방식
+				contentType : "application/json",
+				beforeSend : function(xhr) {
+					//데이터를 전송하기 전에 헤더에 xsrf값
+					xhr.setRequestHeader(header, token);
+				},
+				dataType : "json",
+				cache : false,
+				success : function(result, status) {
+					location.href = '/carts';
+				},
+				error : function(jqXHR, status, error) {
+					if (jqXHR.status == '401') {
+						alert('로그인 후 이용해주세요.');
+						location.href = '/member/login';
+					} else {
+						alert(jqXHR.responseText);
+					}
+				}
+			});
+		}
+		function page(pageNumber) {
+			// 주소 이동
+			location.href = "/carts/" + pageNumber;
 		}
 
 		function deleteCart(cartId) {
