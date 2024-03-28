@@ -117,11 +117,6 @@
          <artifactId>spring-boot-starter-tomcat</artifactId>
          <scope>provided</scope>
       </dependency>
-      <dependency>
-         <groupId>com.example</groupId>
-         <artifactId>shopmax</artifactId>
-         <version>0.0.1-SNAPSHOT</version>
-      </dependency>
    </dependencies>
 
    <build>
