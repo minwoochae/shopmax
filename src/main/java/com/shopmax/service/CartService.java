@@ -47,15 +47,13 @@ public class CartService {
 
 	//장바구니 담기
 	public Long cart(CartDto cartDto,String email) {
-		
 		//1.주문할 상품을 조회
 		Item item = itemRepository.findById(cartDto.getItemId())
 								  .orElseThrow(EntityNotFoundException::new);
 		
 		//2.현재 로그인한 회원의 이메일을 이용해 회원정보를 조회
 		Member member = memberRepository.findByEmail(email);	
-		
-		
+
 		Cart cartId = cartRepository.findByItemId(item.getId());
 		
 		if(cartId == null) {
@@ -99,7 +97,6 @@ public class CartService {
 			}
 			cartHistDtos.add(cartHistDto);
 		}
-	
 		
 		return new PageImpl<>(cartHistDtos,pageable, totalcount); //4.페이지 구현 객체를 생성하여 return
 	}

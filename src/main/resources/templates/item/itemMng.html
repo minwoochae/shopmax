@@ -55,7 +55,7 @@
 						      </td>
 						      <td th:text="${item.itemSellStatus}"></td>
 						      <td th:text="${item.createdBy}"></td>
-						      <td th:text="${item.regTime}"></td>
+								<td th:text="${#temporals.format(item.regTime , 'yyyy-MM-dd')}"></td>
 						    </tr>
 						  </tbody>
 						</table>

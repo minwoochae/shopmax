@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 @Setter
 public class ItemImg extends BaseEntity {
-	
 	@Id
 	@Column(name="item_img_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

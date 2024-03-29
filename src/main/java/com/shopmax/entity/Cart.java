@@ -16,7 +16,6 @@ import lombok.*;
 @Getter
 @ToString
 public class Cart  extends BaseEntity{
-	
 	@Id
 	@Column(name="card_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

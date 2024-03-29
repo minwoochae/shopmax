@@ -67,15 +67,12 @@ public class MemberService implements UserDetailsService{
 		Member member = memberRepository.findByEmail(email);
 	    return member;
 	}
-	
-	
+
 	public void deleteMember(Long memberId) {
 		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
 
 		memberRepository.delete(member);
 	}
-	
-	
 	
 	public Qa saveQa(Qa qa) {
 		Qa savedMember = qaRepository.save(qa); //insert
@@ -125,9 +122,5 @@ public class MemberService implements UserDetailsService{
 				.roles(member.getRole().toString())
 				.build();
 	}
-	
-	
-	
 
-	
 } 

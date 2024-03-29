@@ -29,7 +29,6 @@ public class Member extends BaseEntity {
 	@Column(nullable = false, length = 255)
 	private String password;//비밀번호
 
-	
 	private String address;
 	
 	@Enumerated(EnumType.STRING)
@@ -39,14 +38,13 @@ public class Member extends BaseEntity {
 		this.name = name;
 		this.address = address;
 	}
-	
-	
+
 	public void updatepassword(String password) {
 		this.password = password;
 	}
+
 	public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
 		String password = passwordEncoder.encode(memberFormDto.getPassword());
-		
 		Member member = new Member();
 		member.setName(memberFormDto.getName());
 		member.setEmail(memberFormDto.getEmail());

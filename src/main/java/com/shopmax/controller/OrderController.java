@@ -37,12 +37,10 @@ public class OrderController {
 	private final MemberService memberService;
 	private final CartService cartService;
 	
-	
+	//order 페이지
 	@PostMapping(value ="/order")
 	public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto,
 			BindingResult bindingResult , Principal principal){
-		//Principal: 로그인한 사용자의 정보를 가져올수 있다.
-		
 		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -52,7 +50,6 @@ public class OrderController {
 			}
 			return new ResponseEntity<String>(sb.toString(),HttpStatus.BAD_REQUEST);
 		}
-		
 		String email = principal.getName(); //id 에 해당하는 정보를 가지고 온다,(email)
 		Long orderId;
 		try {
@@ -67,7 +64,6 @@ public class OrderController {
 	public @ResponseBody ResponseEntity orderItems(@RequestBody @Valid OrderDto orderDto,
 											  BindingResult bindingResult , Principal principal){
 		//Principal: 로그인한 사용자의 정보를 가져올수 있다.
-
 		if(bindingResult.hasErrors()) {
 			StringBuilder sb = new StringBuilder();
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -95,22 +91,16 @@ public class OrderController {
 		//1. 한페치지당 4개의 데이터를 가지고 오도록 설정
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 //		//2. 서비스 호출
-		System.out.println(principal.getName());
 		Page<OrderHistDto> orderHistDtoList = orderService.getoderList(principal.getName() ,pageable);
 //		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
 		model.addAttribute("orders",orderHistDtoList);
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
-//		model.addAttribute("page", pageable.getPageNumber()); //현재 페이지
-		
-Member members = memberService.getMember(principal.getName());
-		
+		Member members = memberService.getMember(principal.getName());
 		Long Count = cartService.cartCount(members);
-		
 	    // 모델에 상품 수를 추가합니다
 	    model.addAttribute("Count", Count);
 		return "order/orderHist";
 	}
-	
 	//주문 취소
 	@PostMapping("/order/{orderId}/cancel")
 	public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId,
@@ -132,7 +122,6 @@ Member members = memberService.getMember(principal.getName());
 		if(!orderService.validateOrder(orderId, principal.getName())) {
 			return new ResponseEntity<String>("주문 삭제 권한이 없습니다." , HttpStatus.FORBIDDEN);
 		}
-		
 		//2. 주문삭제
 		orderService.deleteOrder(orderId);
 		

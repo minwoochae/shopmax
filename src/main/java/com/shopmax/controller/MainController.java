@@ -45,9 +45,7 @@ public class MainController {
 	    // 모델에 상품 수를 추가합니다
 	    model.addAttribute("Count", Count);
 			}
-			}
-		
-		
+		}
 		
 		return "main";
 	}

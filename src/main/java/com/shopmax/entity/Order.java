@@ -16,7 +16,6 @@ import lombok.*;
 @Getter
 @ToString
 public class Order extends BaseEntity {
-	
 	@Id
 	@Column(name="order_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -47,16 +47,15 @@ public class Qa extends BaseEntity {
 	@ManyToOne(fetch =FetchType.LAZY)
 	@JoinColumn(name ="member_id")
 	private Member member;
-	
-	
+
 	//제목
 	private String title;
 
 	//문의 유형
 	private String inquirytype;
+
 	//질문
 	private String question;
-
 
 	public static Qa createQa( QaDto qaDto, Member member) {
 		Qa qa =new Qa();

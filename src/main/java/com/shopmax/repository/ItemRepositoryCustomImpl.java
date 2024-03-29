@@ -24,7 +24,6 @@ import com.shopmax.Dto.*;
 import jakarta.persistence.EntityManager;
 @Component
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
-
 	private JPAQueryFactory queryFactory;
 
 	public ItemRepositoryCustomImpl(EntityManager em) {
@@ -49,7 +48,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 	private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus) {
 		return searchSellStatus == null ? null : QItem.item.itemSellStatus.eq(searchSellStatus);
 	}
-
 
 	private BooleanExpression searchByLike(String searchBy, String searchQuery) {
 		if (StringUtils.equals("itemNm", searchBy)) {

@@ -58,12 +58,10 @@ public class MemberController {
 			BindingResult bindingResult, Model model) {
 		//@valid: 유효성을 검증하려는 객체 앞에 붙인다.
 		//BindingResult: 유효성 검증 후의 결과가 들어있다.
-		
 		if(bindingResult.hasErrors()) {
 			//에러가 있다면 회원가입 페이지로 이동
 			return "member/memberForm";
 		}
-		
 		try {
 			//MemberFormDto -> Member Entity, 비밀번호 암호화
 			Member member = Member.createMember(memberFormDto, passwordEncoder);
@@ -72,23 +70,17 @@ public class MemberController {
 			model.addAttribute("errorMessage", e.getMessage());
 			return "member/memberForm";
 		}
-		
 		return "redirect:/";
 	}
 	
-	//마이페이지
-		@GetMapping(value = "/member/mypage")
-		public String mainMypage( Model model, Principal principal) {
 
-			String members = principal.getName();
-			
-			Member member = memberservice.getMember(members);
-			System.out.println(member);
-			
-			model.addAttribute("member", member);
-			
-			
-			if(principal != null) {
+	//마이페이지
+	@GetMapping(value = "/member/mypage")
+	public String mainMypage( Model model, Principal principal) {
+		String members = principal.getName();
+		Member member = memberservice.getMember(members);
+		model.addAttribute("member", member);
+		if(principal != null) {
 			//카운트
 			Member mb = memberservice.getMember(principal.getName());
 			Long Count = cartService.cartCount(mb);
@@ -97,21 +89,15 @@ public class MemberController {
 			} 
 			return "member/MyPage";
 		}
-		
-		
-		//내 정보 
-		@GetMapping(value = "/member/MyInfo")
-		public String mainMyInpo( Model model, Principal principal) {
 
-			String members = principal.getName();
-			
-			Member member = memberservice.getMember(members);
-			System.out.println(member);
-			
-			model.addAttribute("member", member);
-			
-			
-			if(principal != null) {
+	//내 정보
+	@GetMapping(value = "/member/MyInfo")
+	public String mainMyInpo( Model model, Principal principal) {
+		String members = principal.getName();
+		Member member = memberservice.getMember(members);
+		model.addAttribute("member", member);
+
+		if(principal != null) {
 			//카운트
 			Member mb = memberservice.getMember(principal.getName());
 			Long Count = cartService.cartCount(mb);
@@ -120,197 +106,181 @@ public class MemberController {
 			} 
 			return "member/MyInfo";
 		}
-		
-		
-		
-		//내 정보 수정 
-		@GetMapping(value = "/member/MyInformation")
-		public String mainMyInformation( Model model, Principal principal) {
 
-			String members = principal.getName();
-			Member member = memberservice.getMember(members);
+	//내 정보 수정
+	@GetMapping(value = "/member/MyInformation")
+	public String mainMyInformation( Model model, Principal principal) {
+		String members = principal.getName();
+		Member member = memberservice.getMember(members);
+		model.addAttribute("member", member);
 			
-			model.addAttribute("member", member);
-			
-			
-			if(principal != null) {
+		if(principal != null) {
 			//카운트
 			Member mb = memberservice.getMember(principal.getName());
 			Long Count = cartService.cartCount(mb);
 		    // 모델에 상품 수를 추가합니다
 		    model.addAttribute("Count", Count);
 			} 
-			return "member/MyInformation";
-		}
-		@PostMapping("/member/MyInformation")
-		public String mypageupdate(@Valid String name, @Valid String address, Model model, Principal principal) {
+		return "member/MyInformation";
+	}
+
+	@PostMapping("/member/MyInformation")
+	public String mypageupdate(@Valid String name, @Valid String address, Model model, Principal principal) {
 			String members = principal.getName();
-			
 			Member member = memberservice.getMember(members);
 			memberservice.updateNameAddress(member.getEmail(), name, address);
-			
 			return "redirect:/";
-		}
-		
-		
-		// 탈퇴하기
-		@DeleteMapping(value = "/member/{memberId}/delete")
-		public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
+	}
+
+	// 탈퇴하기
+	@DeleteMapping(value = "/member/{memberId}/delete")
+	public @ResponseBody ResponseEntity deleteMember(@RequestBody @PathVariable("memberId") Long memberId,
 				Principal principal) {
-
-			memberservice.deleteMember(memberId);
-
-			return new ResponseEntity<Long>(memberId, HttpStatus.OK);
-		}
+		memberservice.deleteMember(memberId);
+		return new ResponseEntity<Long>(memberId, HttpStatus.OK);
+	}
 		
-		@GetMapping("/member/checkPwd")
-		@NotBlank
-		public String checkPwdView(Model model , Principal principal) {
-			model.addAttribute("passwordDto", new PasswordDto());
+	//비밀번호 확인
+	@GetMapping("/member/checkPwd")
+	@NotBlank
+	public String checkPwdView(Model model , Principal principal) {
+		model.addAttribute("passwordDto", new PasswordDto());
+			//카운트
+		Member mb = memberservice.getMember(principal.getName());
+		Long Count = cartService.cartCount(mb);
+		    // 모델에 상품 수를 추가합니다
+		model.addAttribute("Count", Count);
+			
+		return "member/checkPwd";
+	}
+
+	// 회원 수정 전 비밀번호 확인
+	@PostMapping(value = "/member/checkPwd")
+	public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
+
+		if (passwordDto.getPassword() == null || passwordDto.getPassword().trim().isEmpty()) {
+			model.addAttribute("errorMessage", "비밀번호 값이 입력되어 있지 않습니다..");
+			return "member/checkPwd";
+		}
+		Member member = memberservice.findByEmail(principal.getName());
+
+		boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
+
+		//카운트
+		Member mb = memberservice.getMember(principal.getName());
+		Long Count = cartService.cartCount(mb);
+		// 모델에 상품 수를 추가합니다
+		model.addAttribute("Count", Count);
+		if (!result) {
+			model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+			return "member/checkPwd";
+		}
+		return "member/EditMember";
+	}
+		
+	// 내 비밀번호수정 (마이페이지에서)
+	@GetMapping(value = "/member/EditMember")
+	public String passwordupdate(Principal principal, Model model) {
+		Member member = memberservice.findByEmail(principal.getName());
+		model.addAttribute("member", member);
+		return "member/EditMember";
+	}
+	@PostMapping("/member/EditMember")
+	public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
+		Member members = memberservice.findByEmail(principal.getName());
+		if(principal != null) {
 			//카운트
 			Member mb = memberservice.getMember(principal.getName());
 			Long Count = cartService.cartCount(mb);
-		    // 모델에 상품 수를 추가합니다
-		    model.addAttribute("Count", Count);
-			
-			return "member/checkPwd";
+			// 모델에 상품 수를 추가합니다
+			model.addAttribute("Count", Count);
 		}
-
-		// 회원 수정 전 비밀번호 확인 
-		@PostMapping(value = "/member/checkPwd")
-		public String checkPwd(@Valid PasswordDto passwordDto, Principal principal, Model model) {
-
-			  if (passwordDto.getPassword() == null || passwordDto.getPassword().trim().isEmpty()) {
-			        model.addAttribute("errorMessage", "비밀번호 값이 입력되어 있지 않습니다..");
-			        return "member/checkPwd";
-			    }
-			Member member = memberservice.findByEmail(principal.getName());
-
-			boolean result = passwordEncoder.matches(passwordDto.getPassword(), member.getPassword());
-
-			if (!result) {
-				model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-				return "member/checkPwd";
-			}
-
-			return "member/EditMember";
-		}
-		
-		// 내 비밀번호수정 (마이페이지에서)
-		@GetMapping(value = "/member/EditMember")
-		public String passwordupdate(Principal principal, Model model) {
-			Member member = memberservice.findByEmail(principal.getName());
+		if (password == null || password.trim().isEmpty()) {
+			model.addAttribute("errorMessage", "비밀번호 값이 없습니다.");
 			model.addAttribute("member", member);
 			return "member/EditMember";
 		}
-
-		@PostMapping("/member/EditMember")
-		public String passwordupdate(@RequestParam String password, Model model, Principal principal, Member member) {
-			Member members = memberservice.findByEmail(principal.getName());
-			if(principal != null) {
-				//카운트
-				Member mb = memberservice.getMember(principal.getName());
-				Long Count = cartService.cartCount(mb);
-			    // 모델에 상품 수를 추가합니다
-			    model.addAttribute("Count", Count);
-				} 
-			   if (password == null || password.trim().isEmpty()) {
-			        model.addAttribute("errorMessage", "비밀번호 값이 없습니다.");
-			        model.addAttribute("member", member);
-			        return "member/EditMember";
-			    }
-			    
-			
-			if (passwordEncoder.matches(password, members.getPassword()) == true) {
-				model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
-				model.addAttribute("member", member);
-				return "member/EditMember";
-			}
-			
-			else {
-				memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
-				return "redirect:/member/mypage";
-			}
-
+		if (passwordEncoder.matches(password, members.getPassword()) == true) {
+			model.addAttribute("errorMessage", "기존 비밀번호와 같습니다.");
+			model.addAttribute("member", member);
+			return "member/EditMember";
 		}
-
-		
-		//문의하기
-		@GetMapping(value = "/members/qa")
-		public String qa(Model model, Principal principal) {
-			if (principal != null) {
-				// 카운트
-				Member mb = memberservice.getMember(principal.getName());
-				Long Count = cartService.cartCount(mb);
-				// 모델에 상품 수를 추가합니다
-				model.addAttribute("Count", Count);
-			}
-			model.addAttribute("qaDto", new QaDto());
-			return "member/qa";
+			
+		else {
+			memberservice.updatepassword(principal.getName(), passwordEncoder.encode(password), passwordEncoder);
+			return "redirect:/member/mypage";
 		}
-		
-		@PostMapping(value = "/members/qa")
-		public String postqa(@Valid QaDto qadto,
+	}
+
+	//문의하기
+	@GetMapping(value = "/members/qa")
+	public String qa(Model model, Principal principal) {
+		if (principal != null) {
+			// 카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+			// 모델에 상품 수를 추가합니다
+			model.addAttribute("Count", Count);
+		}
+		model.addAttribute("qaDto", new QaDto());
+		return "member/qa";
+	}
+	@PostMapping(value = "/members/qa")
+	public String postqa(@Valid QaDto qadto,
 				BindingResult bindingResult, Model model, Principal principal) {
-			//@valid: 유효성을 검증하려는 객체 앞에 붙인다.
-			//BindingResult: 유효성 검증 후의 결과가 들어있다.
-			
-			if(bindingResult.hasErrors()) {
-				return "qa/list";
-			}
+
+		if(bindingResult.hasErrors()) {
+			return "qa/list";
+		}
 			
 			try {
 				String members = principal.getName();
 				Member member = memberservice.getMember(members);
-				
 				Qa qa = Qa.createQa(qadto, member);
-				System.out.println(qa);
 				memberservice.saveQa(qa);
 			} catch (IllegalStateException e) {
 				model.addAttribute("errorMessage", e.getMessage());
 				return "qa/list";
 			}
-			
-			return "redirect:/";
-		}
-		//Q&A 리스트
-		@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
-		public String memberManage(@PathVariable("page") Optional<Integer> page, Model model, Principal principal) {
+		return "redirect:/";
+	}
+
+	//Q&A 리스트
+	@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
+	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model, Principal principal) {
 			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
 
-			Page<Qa> qa = memberservice.getqaPage(pageable);
-			System.out.println(qa);
-			model.addAttribute("qa", qa);
-			model.addAttribute("maxPage", 5);
-			if (principal != null) {
-				// 카운트
-				Member mb = memberservice.getMember(principal.getName());
-				Long Count = cartService.cartCount(mb);
-				// 모델에 상품 수를 추가합니다
-				model.addAttribute("Count", Count);
-			}
-
-			return "member/QaList";
+		Page<Qa> qa = memberservice.getqaPage(pageable);
+		model.addAttribute("qa", qa);
+		model.addAttribute("maxPage", 5);
+		if (principal != null) {
+			// 카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+			// 모델에 상품 수를 추가합니다
+			model.addAttribute("Count", Count);
 		}
+		return "member/QaList";
+	}
 		
-		//문의하기 dtl
-		@GetMapping(value = "/qa/lists/{qaId}")
-		public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
-		    QaDto qadtl = memberservice.getqaDtl(qaId);
-		    model.addAttribute("qaDetail", qadtl);
-		    // Qa 가져오기
-		    Optional<Qa> qaa = memberservice.getQaById(qaId);
-		    qaa.ifPresent(qa -> model.addAttribute("qa", qa)); // Optional에서 Qa 객체 추출하여 모델에 추가
+	//문의하기 dtl
+	@GetMapping(value = "/qa/lists/{qaId}")
+	public String qaListNo(@PathVariable("qaId") Long qaId, Model model, Principal principal) {
+		QaDto qadtl = memberservice.getqaDtl(qaId);
+		model.addAttribute("qaDetail", qadtl);
+		// Qa 가져오기
+		Optional<Qa> qaa = memberservice.getQaById(qaId);
+		qaa.ifPresent(qa -> model.addAttribute("qa", qa)); // Optional에서 Qa 객체 추출하여 모델에 추가
 
-		    if (principal != null) {
-		        // 카운트
-		        Member mb = memberservice.getMember(principal.getName());
-		        Long Count = cartService.cartCount(mb);
-		        // 모델에 상품 수를 추가합니다
-		        model.addAttribute("Count", Count);
-		    }
-		    return "member/qaDtl";
+		if (principal != null) {
+			// 카운트
+			Member mb = memberservice.getMember(principal.getName());
+			Long Count = cartService.cartCount(mb);
+			// 모델에 상품 수를 추가합니다
+			model.addAttribute("Count", Count);
 		}
+		return "member/qaDtl";
+	}
 		
 		
 

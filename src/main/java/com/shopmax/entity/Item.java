@@ -14,7 +14,6 @@ import lombok.*;
 @Setter
 @ToString
 public class Item extends BaseEntity {
-	
 	@Id
 	@Column(name="item_id") //테이블로 생성할때 컬럼이름을 지정해준다.
 	@GeneratedValue(strategy = GenerationType.AUTO) //기본키를 자동으로 생성해주는 전략 사용
@@ -52,7 +51,6 @@ public class Item extends BaseEntity {
 		if(restStock < 0 ) {
 			throw new OutOfStockException("상품의 재고가 부족합니다. 현재 재고수량:"+ this.stockNumber);
 		}
-		
 		this.stockNumber = restStock; //남은 재고수량 반영
 	}
 	//재고증가

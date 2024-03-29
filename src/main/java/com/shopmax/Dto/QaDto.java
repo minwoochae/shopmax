@@ -15,20 +15,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class QaDto {
 	private Long id;
 
-
 	private String qaDate;
 
 	private String title;
 	
 	@NotBlank(message = "문의 유형을 선택해주세요.")
 	private String inquirytype;
-;
 
 	private String question;
 
 	private Member member;
 
 	private static final int TITLE_MAX_LENGTH = 15; // 제목의 최대 길이를 15으로 제한합니다.
+
 	private static final int QUESTION_MAX_LENGTH = 200; // 질문의 최대 길이를 300으로 제한합니다.
 
    public void setTitle(String title) {
@@ -49,10 +48,6 @@ public class QaDto {
         }
     }
 
-    
-    
-    
-    
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	// entity -> dto로 바꿈

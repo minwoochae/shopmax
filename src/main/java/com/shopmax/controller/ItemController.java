@@ -63,8 +63,7 @@ public class ItemController {
 	public String itemDtl(Model model, @PathVariable("itemId") Long itemId , Principal principal) {
 		ItemFormDto itemFormDto =itemService.getItemDtl(itemId);
 		model.addAttribute("item", itemFormDto);
-		
-		
+
 		if(principal != null){
 		Member members = memberService.getMember(principal.getName());
 		Long Count = cartService.cartCount(members);
@@ -109,7 +108,6 @@ public class ItemController {
 		Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
 		
 		model.addAttribute("items", items);
-		
 		model.addAttribute("itemSearchDto", itemSearchDto);
 		model.addAttribute("maxPage", 5); //상품관리 페이지 하단에 보여줄 최대 페이지 번호
 		
@@ -141,15 +139,12 @@ public class ItemController {
 			if(bindingResult.hasErrors()) {
 				return "item/itemForm";
 			}
-			
 			// 첫번째 이미지가 있는지 검사
 			if(itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
 				model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입니다.");
 				return "item/itemForm";
 			}
-			
 			try {
-				
 				itemService.updateItem(itemFormDto, itemImgFileList);
 			} catch (Exception e) {
 				e.printStackTrace();

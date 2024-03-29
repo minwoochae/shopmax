@@ -25,20 +25,15 @@ public class CartItem  extends BaseEntity{
 	private int cartPrice; //상품가격
 	
 	private int count; //수량
-	
-	
+
 	//주문할 상품하고 주문 수량을 통해 cartItem객체를 만든다.
 		public static CartItem createCartItem(Item item, int conut) {
 		CartItem cartItem = new CartItem();
 		cartItem.setItem(item);
 		cartItem.setCount(conut);
 		cartItem.setCartPrice(item.getPrice());
-		
-		//item.removeStock(conut); //재고
-		
 		return cartItem;		
 		}
-		
 
 	    // 이미 담겨있는 물건 또 담을 경우 수량 증가
 	    public void addCount(int count) {

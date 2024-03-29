@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 public class OrderItemDto {
-	
 	//앤티티 - > Dto로 바꿔준다.
 	public OrderItemDto(OrderItem orderItem, String imgUrl) {
 		this.itemNm = orderItem.getItem().getItemNm();
@@ -17,8 +16,7 @@ public class OrderItemDto {
 	}
 	
 	public String itemNm; //상품명
-	
-	
+
 	public int count; //주문수량
 	
 	public int orderPrice; //주문 금액

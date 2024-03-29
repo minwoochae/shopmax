@@ -42,6 +42,8 @@ public class CartController {
 	private final CartService cartService;
 	private final MemberService memberService;
 	private final ItemService itemService;
+
+	//장바구니
 	@PostMapping(value = "/cart")
 	public @ResponseBody ResponseEntity cartList(@RequestBody @Valid CartDto cartDto,
 			BindingResult bindingResult , Principal principal) {
@@ -68,7 +70,7 @@ public class CartController {
 				return new ResponseEntity<Long>(cartId,HttpStatus.OK); //성공시
 	}		
 	
-	
+	//장바구니 리스트
 	@GetMapping(value = {"/carts" , "/carts/{page}"})
 	public String cartHist(@PathVariable("page") Optional<Integer> page,
 			Principal principal, Model model) {
@@ -80,8 +82,6 @@ public class CartController {
 		//3.서비스에서 가져온 값을들 view단에 model을 이용해 전송
 		model.addAttribute("carts",cartHistDtoList);
 		model.addAttribute("maxPage", 5); //하단에 보여줄 최대 페이지
-		
-
 
 		//카운트
 		Member members = memberService.getMember(principal.getName());
@@ -91,7 +91,7 @@ public class CartController {
 		
 		return "cart/cartList";
 	}
-	//주문 삭제
+	//장바구니 삭제
 	@DeleteMapping("/cart/{cartId}/delete")
 	public @ResponseBody ResponseEntity deleteOrder(@PathVariable("cartId") Long cartId,
 			Principal principal) {
@@ -99,7 +99,6 @@ public class CartController {
 		if(!cartService.validateCart(cartId, principal.getName())) {
 			return new ResponseEntity<String>("주문 삭제 권한이 없습니다." , HttpStatus.FORBIDDEN);
 		}
-		
 		//2. 주문삭제
 		cartService.deleteCart(cartId);
 		
