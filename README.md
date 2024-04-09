@@ -1,4 +1,4 @@
-![image](https://github.com/minwoochae/shopmax/assets/130428663/c80f9e8b-01a0-4ffc-88ef-1b5354526ead)# shopmax
+# shopmax
     의류 홈페이지로서 여러 의류 상품들을 집에서도 간편 하게 구입하고 구경을 할수 있습니다.
 
 
