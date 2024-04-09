@@ -1,4 +1,4 @@
-# shopmax
+![image](https://github.com/minwoochae/shopmax/assets/130428663/c80f9e8b-01a0-4ffc-88ef-1b5354526ead)# shopmax
     의류 홈페이지로서 여러 의류 상품들을 집에서도 간편 하게 구입하고 구경을 할수 있습니다.
 
 
@@ -245,7 +245,7 @@ function order() {
 ### 비밀번호 변경은 내 비밀번호 확인후 맞을 경우 내가 원하는 비밀번호로 변경이 가능하다. 
     (현재 비밀번호와 내가 변경 하려는 비밀번호 같으면 변경이 불가능 하도록 설정 해였습니다.)
 
-<img style="width: 500px;margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942396-f8e59f34-b821-45f4-8cc6-2cf85e7fc097.PNG?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTE2ODMzNTgsIm5iZiI6MTcxMTY4MzA1OCwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzk2LWY4ZTU5ZjM0LWI4MjEtNDVmNC04Y2M2LTJjZjg1ZTdmYzA5Ny5QTkc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzI5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMyOVQwMzMwNThaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00YzUzODg0NGNlNzhjZjRmYTM0YjZjYWI2NDE2NWU0ZjllYjRkY2M5N2U2YzUxMDgwOTQ1YjUzNjNlMTY4OGNjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.RN4TkOvD3a549-2moJnXtFjVVfMK-sRClvPTOmkrqGI" />
+<img style="width: 500px;margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942396-f8e59f34-b821-45f4-8cc6-2cf85e7fc097.PNG?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTI2NDA3OTYsIm5iZiI6MTcxMjY0MDQ5NiwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzk2LWY4ZTU5ZjM0LWI4MjEtNDVmNC04Y2M2LTJjZjg1ZTdmYzA5Ny5QTkc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNDA5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDQwOVQwNTI4MTZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MWNkYjRjNzNmOWQzNzlhYWExZmUzYmJhOThjMmM4N2E5OTI4MDc4MTI4MjQwMDI1NjdlNjY4ZmRmMTRlYTNjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.SBoGiWyie4GGQypI9A3IT38d_gaaCU0bkPkRkgGS5xY" />
 
 ```java
 1. 비밀번호 확인 -> 기존에 있던 비밀번호와 일치한지 확인(passwordEncoder.matches를 이용하여 암호화 된 비밀번호와 내가 입력한 비밀번호를 검사) 
