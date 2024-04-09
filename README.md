@@ -27,7 +27,7 @@
 
 ## 📺shopmax 화면
 ### 관리자 자유롭게 상품 등록을 할수 있습니다. 
-<img style="width: 500px; margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942387-81355054-8f21-4461-94a0-efa517a11d60.PNG?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTI2NDA0MjUsIm5iZiI6MTcxMjY0MDEyNSwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzg3LTgxMzU1MDU0LThmMjEtNDQ2MS05NGEwLWVmYTUxN2ExMWQ2MC5QTkc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNDA5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDQwOVQwNTIyMDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZWI1NmRhMTdhN2YzNjcwNGZmZjY1ODBkMzRiMjYxNzY1Yjc0Nzk1MjFiZmUyNGViZDdkN2UxMzg4MjhhNjgxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.oF6KmkXGVHbLib0YjPmwlwZMydOmR4PI9epYY1cDm1c"/>
+<img style="width: 500px; margin: auto; display: block;" src=""/>
 
 
 ```java
@@ -91,7 +91,7 @@ public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileLis
 
 ### 사용자가 구매 내역을 통해서 구매한 상품들을 확인하고 주문을 취소 할수 있습니다.
 
-<img style="width: 500px;margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942387-81355054-8f21-4461-94a0-efa517a11d60.PNG?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTE2ODI2NTEsIm5iZiI6MTcxMTY4MjM1MSwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzg3LTgxMzU1MDU0LThmMjEtNDQ2MS05NGEwLWVmYTUxN2ExMWQ2MC5QTkc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwMzI5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDMyOVQwMzE5MTFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wOTM2YmExOWNmM2I3MWMwMTU1NjVmMThjYTYyOTFlMmE0YmQxY2M0N2EyNGYxZTFhODA1NDZjNzk2MDZiZDUwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.k8LDP0paJ75TO0WEJDdbfbGnoVxo2EN_A6iEuQM-TnA"/>
+<img style="width: 500px;margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942387-81355054-8f21-4461-94a0-efa517a11d60.PNG?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTI2NDA0MjUsIm5iZiI6MTcxMjY0MDEyNSwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzg3LTgxMzU1MDU0LThmMjEtNDQ2MS05NGEwLWVmYTUxN2ExMWQ2MC5QTkc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNDA5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDQwOVQwNTIyMDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yZWI1NmRhMTdhN2YzNjcwNGZmZjY1ODBkMzRiMjYxNzY1Yjc0Nzk1MjFiZmUyNGViZDdkN2UxMzg4MjhhNjgxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.oF6KmkXGVHbLib0YjPmwlwZMydOmR4PI9epYY1cDm1c"/>
 
 구매내역을 확인하고 주문 취소 -> 삭제하기가 가능하게 제작 하였습니다..
 
