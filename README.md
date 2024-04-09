@@ -27,7 +27,7 @@
 
 ## 📺shopmax 화면
 ### 관리자 자유롭게 상품 등록을 할수 있습니다. 
-<img style="width: 500px; margin: auto; display: block;" src=""/>
+<img style="width: 500px; margin: auto; display: block;" src="https://private-user-images.githubusercontent.com/130428663/317942398-a162e9a0-2125-4d51-93e9-a76457674ed7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTI2NDA1MzYsIm5iZiI6MTcxMjY0MDIzNiwicGF0aCI6Ii8xMzA0Mjg2NjMvMzE3OTQyMzk4LWExNjJlOWEwLTIxMjUtNGQ1MS05M2U5LWE3NjQ1NzY3NGVkNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNDA5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDQwOVQwNTIzNTZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mZDczMWMzODU3Y2FlNTVlMzM3MTk5ZjIzMzczNjQyY2YwMDczZDY4Yjk5ZjhjYTQ1YzdjODY3NDZjMTc0Y2MwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.gHThUGVRqa0N7tNE37IK-UlUIOMTX47YHIUcsM81GZA"/>
 
 
 ```java
