@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>	
+
+</style>
+</th:block>
+
+<div layout:fragment="content" style="height:1000px; margin-top:70px;">
+	
+	
+	<div class="container">
+	
+	<h2 class="h3 text-black">멤버 관리</h2>
+	 <div th:if="${errorMessage}" th:text="${errorMessage}" id="error-message" style="display: none;"></div>
+	</br>
+	<table
+		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 950px; margin-bottom: 50px; height: 75px">
+		<tr style="border-top: solid 1.5px black; height:40px;">
+			<th style="padding-left: 15px; width: 100px">No.</th>
+			<th style="text-align: center; ">이메일</th>
+			<th style="width: 150px">회원 이름</th>
+			<th style="margin: 0 auto; width: 200px">날짜</th>
+		</tr>
+		<tr th:each="members : ${member.content}"   th:if="${#strings.equals(members.role, 'USER')}" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="border-top: solid 0.5px gray; border-bottom: solid 0.5px gray;  height: 30px;">
+			<td style="padding-left: 15px;" th:text="${members.id}"></td>
+			<td><a th:href="'/admin/memberListDtl/' + ${members.id}"
+				th:text="${members.email}"></a></td>
+			<td th:text="${members.name}"></td>
+			<td th:text="${#temporals.format(members.regTime , 'yyyy-MM-dd')}"></td>
+		</tr>
+	</table>
+
+<div class="memberbottom">
+	<nav style="margin-bottom: 50px"
+		th:with="start=${(member.number/maxPage)*maxPage + 1}
+									,end=(${(member.totalPages == 0) ? 1 : (start + (maxPage - 1) < member.totalPages ? start + (maxPage - 1) : member.totalPages)})"
+		aria-label="Page navigation example">
+		<ul class="pagination d-flex justify-content-center">
+			<li class="page-item" th:classappend="${member.first}?'disabled'">
+				<a class="page-link"
+				th:onclick="'javascript:page(' + ${member.number - 1} +')'"> 이전 </a>
+			</li>
+			<li class="page-item"
+				th:each="page: ${#numbers.sequence(start, end)}"
+				th:classappend="${member.number eq page-1}?'active':''"><a
+				class="page-link" th:inline="text"
+				th:onclick="'javascript:page(' + ${page - 1} +')'">[[${page}]]</a></li>
+			<li class="page-item" th:classappend="${member.last}?'disabled'">
+				<a class="page-link"
+				th:onclick="'javascript:page(' + ${member.number + 1} +')'"> 다음 </a>
+			</li>
+		</ul>  
+		
+<!-- 	<input type="button" class="memberbut" value="문의하기" onclick="window.location.href = '/members/member';"> -->
+	</nav>
+	</div>
+</div>
+</div>
+
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	function page(pageNumber) {
+	    // 주소 이동
+	    location.href = "/admin/memberList/" + pageNumber;
+	}
+	
+	$(document).ready(function(){
+    	var errorMessage = [[${errorMessage}]];
+    	if(errorMessage != null){
+        	alert(errorMessage);
+    	}
+	</script>
+</th:block>
+</html>

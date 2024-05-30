@@ -50,6 +50,26 @@ public class ItemController {
 		}
 		return "item/itemShopList";
 	}
+	
+	// 상품sold out 리스트
+	@GetMapping(value = "/item/shop/soldout")
+	public String itemShopListSoldOut(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page ,Principal principal)  {
+			
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
+		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+			
+		model.addAttribute("items",items);
+		model.addAttribute("itemSearchDto",itemSearchDto);
+		model.addAttribute("maxPage",5);
+		
+		if(principal != null){
+		Member members = memberService.getMember(principal.getName());
+		Long Count = cartService.cartCount(members);
+	    // 모델에 상품 수를 추가합니다
+	    model.addAttribute("Count", Count);
+		}
+		return "item/soldout";
+	}
 
 	// 상품등록 페이지
 	@GetMapping(value = "/admin/item/new")

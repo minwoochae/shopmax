@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/layout1}">
+
+<head>
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+</head>
+<!-- 각 페이지의 CSS가 작성될 위치 -->
+<th:block layout:fragment="css">
+	<style>
+.cen {
+	justify-content: center;
+	align-items: center;
+	margin: 100px auto;
+}
+</style>
+</th:block>
+<div layout:fragment="content">
+	<div class="row">
+		<div class="col-md-6 cen">
+			<h2 class="h3 mb-3 text-black">회원 정보</h2>
+			<div class="p-3 p-lg-5 border">
+				<form role="form" action="/admin/memberListDtl/{memberId}"
+					method="get" th:object="${member}">
+					<input type="hidden" id="memberId" th:value="${member.Id}" />
+					<div class="info ">
+						<div class="texts">
+							<div class="email">Email&nbsp;: [[${member.email}]]</div>
+							<br>
+							<div class="name">Name&nbsp;:[[${member.name}]]</div>
+							<br>
+							<div class="address">거주지&nbsp;:[[${member.address}]]</div>
+						</div>
+						<div></div>
+						<div class="date" style="float: right;"
+							th:text="'가입일자 : ' + ${#temporals.format(member.regTime , 'yyyy-MM-dd')}"></div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+<!-- 각 페이지의 스크립트가 작성될 위치 -->
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		
+	</script>
+</th:block>
+</html>

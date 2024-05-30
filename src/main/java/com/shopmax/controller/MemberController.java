@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.shopmax.Dto.MemberFormDto;
 import com.shopmax.Dto.PasswordDto;
 import com.shopmax.Dto.QaDto;
+import com.shopmax.constant.Role;
 import com.shopmax.entity.Member;
 import com.shopmax.entity.Qa;
 import com.shopmax.service.CartService;
@@ -244,7 +245,46 @@ public class MemberController {
 			}
 		return "redirect:/";
 	}
-
+	
+	//어드민 멤버 리스트
+	@GetMapping(value = {"/admin/memberList", "/admin/memberList/{page}"})
+	public String adminMeberList(@PathVariable("page") Optional<Integer> page, Principal principal , Model model) {
+		
+			
+		try {
+			Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+			Page<Member> member = memberservice.getmemberListPage(pageable);
+			
+			model.addAttribute("member", member);
+			model.addAttribute("maxPage", 5);
+			return "member/adminMemberList";
+		} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("errorMessage", "멤버 확인에 있어 문제가 발생하였습니다(adminMemberList)");
+				return "member/adminMemberList";
+		}
+	}
+	
+	//멤버 리스트의 상세정보
+	@GetMapping(value = "/admin/memberListDtl/{memberId}")
+	public String memberListDtl(@PathVariable("memberId") Long memberId, Model model, Principal principal) {
+		
+		try {
+			Member member = memberservice.getmemberListDtl(memberId);
+			
+			model.addAttribute("member" , member);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "멤버 확인에 있어 문제가 발생하였습니다(memberListDtl)");
+		}
+		
+		
+		
+		
+		return "member/memberListDtl"; 
+	}
+	
 	//Q&A 리스트
 	@GetMapping(value = { "/qa/list", "/qa/list/{page}" })
 	public String memberManage(@PathVariable("page") Optional<Integer> page, Model model, Principal principal) {

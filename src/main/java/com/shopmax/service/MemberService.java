@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shopmax.Dto.QaDto;
+import com.shopmax.constant.Role;
 import com.shopmax.entity.Member;
 import com.shopmax.entity.Qa;
 import com.shopmax.repository.MemberRepository;
@@ -42,6 +43,9 @@ public class MemberService implements UserDetailsService{
 		
 		return getMembers; //
 	}
+	
+	
+	
 	
 	//비밀번호 수정
 	public void updatepassword(String email, String password, PasswordEncoder passwordEncoder) {
@@ -94,6 +98,12 @@ public class MemberService implements UserDetailsService{
 	}
 	
 	@Transactional(readOnly = true) // 트랜잭션 읽기 전용(변경감지 수행하지 않음) -> 성능 향상
+	public Member getmemberListDtl(Long memberId) {
+		Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+		return member;		
+	}
+	
+	@Transactional(readOnly = true) // 트랜잭션 읽기 전용(변경감지 수행하지 않음) -> 성능 향상
 	public QaDto getqaDtl(Long qaId) {
 		Qa qa = qaRepository.findById(qaId).orElseThrow(EntityNotFoundException::new);
 		QaDto qad = QaDto.of(qa);
@@ -104,6 +114,11 @@ public class MemberService implements UserDetailsService{
 	@Transactional(readOnly = true)
 	public Page<Qa> getqaPage(Pageable pageable) {
 		return qaRepository.findAll(pageable);
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<Member> getmemberListPage(Pageable pageable) {
+		return memberRepository.findAll(pageable);
 	}
 	
 	@Override
