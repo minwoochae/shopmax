@@ -15,8 +15,10 @@ import com.shopmax.Dto.ItemImgDto;
 import com.shopmax.Dto.ItemRankDto;
 import com.shopmax.Dto.ItemSearchDto;
 import com.shopmax.Dto.MainItemDto;
+import com.shopmax.constant.ItemSellStatus;
 import com.shopmax.entity.Item;
 import com.shopmax.entity.ItemImg;
+import com.shopmax.entity.Member;
 import com.shopmax.repository.ItemImgRepository;
 import com.shopmax.repository.ItemRepository;
 
@@ -87,6 +89,39 @@ public class ItemService {
 		Optional<Item> itemid = itemRepository.findById(id);
 
 		return itemid;
+	}
+	
+	public Optional<Item> findByitemSellStatus(ItemSellStatus itemSellStatus) {
+		
+		Optional<Item> itemitemSellStatus = itemRepository.findByitemSellStatus(itemSellStatus);
+		
+		
+		return itemitemSellStatus;
+	}
+	
+	
+	//itemSellStatus 전체 sell count 
+	public Long ItemSellCount(Item item) {
+		
+		Long items = itemRepository.countBySellStatus();
+		
+		return items;
+	}
+	
+	//itemSellStatus 전체 sold out count
+	public Long ItemSoldOutCount(Item item) {
+		
+		Long items = itemRepository.countBySoldOutStatus();
+		
+		return items;
+	}
+	
+	//itemSellStatus 전체  count
+public Long ItemSellStatusCount(Item item) {
+		
+		Long items = itemRepository.countByitemSellStatus();
+		
+		return items;
 	}
 
 	public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {

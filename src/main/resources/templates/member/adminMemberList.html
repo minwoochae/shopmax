@@ -22,7 +22,7 @@
 	
 	<h2 class="h3 text-black">멤버 관리</h2>
 	 <div th:if="${errorMessage}" th:text="${errorMessage}" id="error-message" style="display: none;"></div>
-	</br>
+	<br>
 	<table
 		style="font-size: 15px; justify-content: center; margin: 0 auto; width: 950px; margin-bottom: 50px; height: 75px">
 		<tr style="border-top: solid 1.5px black; height:40px;">
@@ -79,7 +79,7 @@
     	var errorMessage = [[${errorMessage}]];
     	if(errorMessage != null){
         	alert(errorMessage);
-    	}
+    	}}
 	</script>
 </th:block>
 </html>

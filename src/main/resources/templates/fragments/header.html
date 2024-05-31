@@ -9,6 +9,7 @@
           <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
           <form th:action="@{/item/shop}" method="get">
             <input type="text" name="searchQuery" class="form-control" placeholder="상품검색이 가능합니다">
+          
           </form>  
         </div>
       </div>
@@ -49,8 +50,9 @@
               
               <span class="number" th:text="${Count}"></span>
               
+              
             </a>
-            
+    
             <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span class="icon-menu"></span></a>
           </div>
         </div>

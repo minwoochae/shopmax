@@ -60,7 +60,6 @@ public class OrderService {
 	@Transactional(readOnly = true)
 	public Page<OrderHistDto> getoderList(String email, Pageable pageable){
 		//1. 유저 아이디와 페이징 조건을 이용하여 주문 목록을 조회
-		System.out.println(email + "ㅇㅇㅇㅇㅇㅇㅇ");
 		List<Order> orders =orderRepository.findOrders(email, pageable);
 		//2. 유저의 주문 총개수를 구한다.
 		Long totalcount = orderRepository.countOrder(email);

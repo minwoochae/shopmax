@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.avro.ipc.Server;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,13 +43,79 @@ public class ItemController {
 		model.addAttribute("itemSearchDto",itemSearchDto);
 		model.addAttribute("maxPage",5);
 		
-		if(principal != null){
-		Member members = memberService.getMember(principal.getName());
-		Long Count = cartService.cartCount(members);
-	    // 모델에 상품 수를 추가합니다
-	    model.addAttribute("Count", Count);
+		try {		
+			Item sellconuts = new Item();
+		Item soldOutconuts = new Item();
+		Item itemSellStatusconuts = new Item();
+		
+		Long sellCount = itemService.ItemSellCount(sellconuts);
+		Long soldOutCount = itemService.ItemSoldOutCount(soldOutconuts);
+		Long itemSellStatusCount = itemService.ItemSellStatusCount(itemSellStatusconuts);
+		
+	    model.addAttribute("sellCount", sellCount);
+	    model.addAttribute("soldOutCount", soldOutCount);
+	    model.addAttribute("itemSellStatusCount", itemSellStatusCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품전체 리스트에서 에러가 발생했습니다.");
+			return "/";
+		}
+
+		try {
+			if(principal != null){
+				Member members = memberService.getMember(principal.getName());
+				Long Count = cartService.cartCount(members);
+			    // 모델에 상품 수를 추가합니다
+			    model.addAttribute("Count", Count);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품 SoldOut 리스트에서 에러가 발생했습니다.(count 에러)");
 		}
 		return "item/itemShopList";
+	}
+	
+	// 상품sell 리스트
+	@GetMapping(value = "/item/shop/sell")
+	public String itemShopListSell(Model model, ItemSearchDto itemSearchDto, Optional<Integer> page ,Principal principal)  {
+			
+		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
+		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+		model.addAttribute("items",items);
+		model.addAttribute("itemSearchDto",itemSearchDto);
+		model.addAttribute("maxPage",5);
+		
+		try {		
+			Item sellconuts = new Item();
+		Item soldOutconuts = new Item();
+		Item itemSellStatusconuts = new Item();
+		
+		Long sellCount = itemService.ItemSellCount(sellconuts);
+		Long soldOutCount = itemService.ItemSoldOutCount(soldOutconuts);
+		Long itemSellStatusCount = itemService.ItemSellStatusCount(itemSellStatusconuts);
+		
+	    model.addAttribute("sellCount", sellCount);
+	    model.addAttribute("soldOutCount", soldOutCount);
+	    model.addAttribute("itemSellStatusCount", itemSellStatusCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품 sell 리스트에서 에러가 발생했습니다.");
+			return "/";
+		}
+		try {
+			if(principal != null){
+				Member members = memberService.getMember(principal.getName());
+				Long Count = cartService.cartCount(members);
+			    // 모델에 상품 수를 추가합니다
+			    model.addAttribute("Count", Count);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품 SoldOut 리스트에서 에러가 발생했습니다.(count 에러)");
+		}
+		return "item/sell";
 	}
 	
 	// 상품sold out 리스트
@@ -57,18 +124,42 @@ public class ItemController {
 			
 		Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0 , 6);
 		Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
-			
 		model.addAttribute("items",items);
 		model.addAttribute("itemSearchDto",itemSearchDto);
 		model.addAttribute("maxPage",5);
 		
-		if(principal != null){
-		Member members = memberService.getMember(principal.getName());
-		Long Count = cartService.cartCount(members);
-	    // 모델에 상품 수를 추가합니다
-	    model.addAttribute("Count", Count);
+		
+		try {		
+			Item sellconuts = new Item();
+		Item soldOutconuts = new Item();
+		Item itemSellStatusconuts = new Item();
+		
+		Long sellCount = itemService.ItemSellCount(sellconuts);
+		Long soldOutCount = itemService.ItemSoldOutCount(soldOutconuts);
+		Long itemSellStatusCount = itemService.ItemSellStatusCount(itemSellStatusconuts);
+		
+	    model.addAttribute("sellCount", sellCount);
+	    model.addAttribute("soldOutCount", soldOutCount);
+	    model.addAttribute("itemSellStatusCount", itemSellStatusCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품 SoldOut 리스트에서 에러가 발생했습니다.");
+			return "/";
 		}
-		return "item/soldout";
+		try {
+			if(principal != null){
+				Member members = memberService.getMember(principal.getName());
+				Long Count = cartService.cartCount(members);
+			    // 모델에 상품 수를 추가합니다
+			    model.addAttribute("Count", Count);
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage",  "상품 SoldOut 리스트에서 에러가 발생했습니다.(count 에러)");
+		}
+	
+		return "item/soldOut";
 	}
 
 	// 상품등록 페이지

@@ -1,7 +1,7 @@
 package com.shopmax.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +29,20 @@ public interface ItemRepository extends JpaRepository<Item, Long>,
 			+ "			where item_img.repimg_yn = 'Y'\r\n"
 			+ "			order by num", nativeQuery = true)
 	List<ItemRankDto> getItemRankList();
+	
+//	@Query("select count(*) from item where itemSellStatus = :itemSellStatus")
+//	Long countItem(@Param("itemSellStatus") String itemSellStatus);
+    @Query("SELECT COUNT(i) FROM Item i WHERE i.itemSellStatus = 'SELL'")
+    long countBySellStatus();
+
+    @Query("SELECT COUNT(i) FROM Item i WHERE i.itemSellStatus = 'SOLD_OUT'")
+    long countBySoldOutStatus();
+	
+    @Query("SELECT COUNT(i) FROM Item i WHERE i.itemSellStatus = 'SOLD_OUT' OR i.itemSellStatus = 'SELL'")
+    long countByitemSellStatus();
+	
+    
+    
+	Optional<Item> findByitemSellStatus(ItemSellStatus itemSellStatus);
+	
 }

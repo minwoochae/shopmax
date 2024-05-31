@@ -60,65 +60,74 @@
 							</div>
 						</div>
 					</div>
-						<div class="row mb-5">
-	              <div class="col-lg-6 col-md-6 item-entry mb-4" th:each="item : ${items.getContent()}">
-	                <a th:href="'/item/' +${item.id}" class="product-item md-height bg-gray d-block">
-	                  <img th:src="${item.imgUrl}" th:alt="${item.itemNm}" class="img-fluid">
-	                </a>
-	                <h2 class="item-title"><a th:href="'/item/' +${item.id}" th:text="${item.itemNm}"></a></h2>
-	                <strong class="item-price" >
-	                <del>[[${#numbers.formatInteger(item.price * 1.5, 0, 'COMMA')}]]원</del>
-                    &nbsp;&nbsp;[[${#numbers.formatInteger(item.price, 0, 'COMMA')}]]원</strong>
-	                
+					
+					<div class="row mb-5">
+						<div class="col-lg-6 col-md-6 item-entry mb-4"  th:if="${#strings.equals(item.itemSellStatus, 'SOLD_OUT')}"
+							th:each="item : ${items.getContent()}">
+							<a th:href="'/item/' +${item.id}"
+								class="product-item md-height bg-gray d-block"> <img
+								th:src="${item.imgUrl}" th:alt="${item.itemNm}"
+								class="img-fluid">
+							</a>
+							<h2 class="item-title">
+								<a th:href="'/item/' +${item.id}" th:text="${item.itemNm}"></a>
+							</h2>
+							<strong class="item-price"> <del>[[${#numbers.formatInteger(item.price
+									* 1.5, 0, 'COMMA')}]]원</del>
+								&nbsp;&nbsp;[[${#numbers.formatInteger(item.price, 0,
+								'COMMA')}]]원
+							</strong>
 
-	                <div class="star-rating">
-	                	<span class="icon-star2 text-warning"></span>
-	                	<span class="icon-star2 text-warning"></span>
-	                	<span class="icon-star2 text-warning"></span>
-	                	<span class="icon-star2 text-warning"></span>
-	                	<span class="icon-star2 text-warning"></span>	                	
-	                </div>
-	              </div>
-	            </div>
 
-			<!-- 페이징 -->
-            <div class="row">
-              <div class="col-md-12 text-center ">
-                <nav class="" th:with="start=${(items.number/maxPage)*maxPage + 1}
+							<div class="star-rating">
+								<span class="icon-star2 text-warning"></span> <span
+									class="icon-star2 text-warning"></span> <span
+									class="icon-star2 text-warning"></span> <span
+									class="icon-star2 text-warning"></span> <span
+									class="icon-star2 text-warning"></span>
+							</div>
+						</div>
+					</div>
+
+					<!-- 페이징 -->
+					<div class="row">
+						<div class="col-md-12 text-center ">
+							<nav class=""
+								th:with="start=${(items.number/maxPage)*maxPage + 1}
 							,end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})"
-							aria-label="Page navigation example">
-						  <ul class="pagination justify-content-center">
-						    <li class="page-item" th:classappend="${items.first}?'disabled'">
-									<a class="page-link"
-									th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
+								aria-label="Page navigation example">
+								<ul class="pagination justify-content-center">
+									<li class="page-item"
+										th:classappend="${items.first}?'disabled'"><a
+										class="page-link"
+										th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
 																			+ '&page=' + ${items.number - 1}">이전</a>
-								</li>
-								
-						    <li class="page-item"
-									th:each="page: ${#numbers.sequence(start, end)}"
-									th:classappend="${items.number eq page-1}?'active':''">
-									<a
-									class="page-link" th:inline="text"
-									th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
+									</li>
+
+									<li class="page-item"
+										th:each="page: ${#numbers.sequence(start, end)}"
+										th:classappend="${items.number eq page-1}?'active':''"><a
+										class="page-link" th:inline="text"
+										th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
 																			+ '&page=' + ${page - 1}">[[${page}]]</a>
-							</li>
-								
-						    <li class="page-item" th:classappend="${items.last}?'disabled'">
-									<a class="page-link"
+									</li>
+
+									<li class="page-item" th:classappend="${items.last}?'disabled'">
+										<a class="page-link"
 										th:href="@{'/item/shop' + '?serchQuery=' + ${itemSearchDto.searchQuery}}
 																			+ '&page=' + ${items.number + 1}">다음</a>
-							</li>
-						  </ul>
-					</nav>
-                </div>
-              </div>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					</div>
 				</div>
 
 				<div class="col-md-3 order-2 mb-5 mb-md-0">
 					<div class="border p-4 rounded mb-4">
 						<h3 class="mb-3 h6 text-uppercase text-black d-block">Categories</h3>
 						<ul class="list-unstyled mb-0">
-							<li class="mb-1"><a href="/item/shop" class="d-flex"><span>전체</span>
+								<li class="mb-1"><a href="/item/shop" class="d-flex"><span>전체</span>
 									<span class="text-black ml-auto">([[${itemSellStatusCount}]])</span></a></li>
 							<li class="mb-1"><a href="/item/shop/sell" class="d-flex"><span>판매중</span>
 									<span class="text-black ml-auto">([[${sellCount}]])</span></a></li>
@@ -178,32 +187,30 @@
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
-	$(document).ready(function(){
-		$("#searchBtn").on("click", function(e){
-			e.preventDefault(); // submit되는걸 방지
-			page(0);
+		$(document).ready(function() {
+			$("#searchBtn").on("click", function(e) {
+				e.preventDefault(); // submit되는걸 방지
+				page(0);
+			});
 		});
-	});
-	$(document).ready(function(){
-    	var errorMessage = [[${errorMessage}]];
-    	if(errorMessage != null){
-        	alert(errorMessage);
-    	}
-    		
-	// 페이징버튼 눌렀을때 검색어와 selectbox를 get방식으로 주소 이동시켜준다
-	function page(page){
-		// 입력한 값을 전부 가져온다
-		var searchDateType = $("#searchDateType").val();
-		var searchSellStatus = $("#searchSellStatus").val();
-		var searchBy = $("#searchBy").val();
-		var searchQuery = $("#searchQuery").val();
-		
-		// 주소 이동
-		location.href = "/item/shop/" + page 
-						
-		
-	}
-	
+		$(document).ready(function(){
+        	var errorMessage = [[${errorMessage}]];
+        	if(errorMessage != null){
+            	alert(errorMessage);
+        	}
+        	
+		// 페이징버튼 눌렀을때 검색어와 selectbox를 get방식으로 주소 이동시켜준다
+		function page(page) {
+			// 입력한 값을 전부 가져온다
+			var searchDateType = $("#searchDateType").val();
+			var searchSellStatus = $("#searchSellStatus").val();
+			var searchBy = $("#searchBy").val();
+			var searchQuery = $("#searchQuery").val();
+
+			// 주소 이동
+			location.href = "/item/shop/" + page
+
+		}
 	</script>
 </th:block>
 </html>
