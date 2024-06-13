@@ -5,9 +5,17 @@
 <!-- 각 페이지의 CSS가 작성될 위치 -->
 <th:block layout:fragment="css">
 	<style>
-		.fieldError{
-			color:#bd2130;
-		}
+.fieldError {
+	color: #bd2130;
+}
+
+.button_address{
+	float: right;
+	 margin-bottom: 5px;
+	 border: none;
+	 border-radius: 5px;
+	 font-size: 14px;
+}
 </style>
 </th:block>
 <div layout:fragment="content">
@@ -28,14 +36,16 @@
 				<div class="col-md-12">
 					<h2 class="h3 mb-3 text-black">회원가입</h2>
 					<div class="p-3 p-lg-5 border">
-						<form role="form" action="/members/new" method="post" th:object="${memberFormDto}">
+						<form role="form" action="/members/new" method="post"
+							th:object="${memberFormDto}">
 							<div class="form-group row">
 								<div class="col-md-12">
-										<!--th:field => id, name , 속성을 자동으로 생성해준다.  -->
+									<!--th:field => id, name , 속성을 자동으로 생성해준다.  -->
 									<label th:for="name" class="text-black">이름</label> <input
-										type="text" class="form-control" 
-										placeholder="이름을 입력해주세요" th:field="*{name}">
-									<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect Data</p>
+										type="text" class="form-control" placeholder="이름을 입력해주세요"
+										th:field="*{name}">
+									<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+										class="fieldError">Incorrect Data</p>
 								</div>
 							</div>
 
@@ -43,8 +53,9 @@
 								<div class="col-md-12">
 									<label th:for="email" class="text-black">이메일</label> <input
 										type="email" class="form-control" placeholder="이메일을 입력해주세요"
-										 th:field="*{email}">
-									<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect Data</p>
+										th:field="*{email}">
+									<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+										class="fieldError">Incorrect Data</p>
 								</div>
 							</div>
 
@@ -53,15 +64,31 @@
 									<label th:for="password" class="text-black">비밀번호</label> <input
 										type="password" class="form-control"
 										placeholder="비밀번호를 입력해주세요" th:field="*{password}">
-									<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect Data</p>
+									<p th:if="${#fields.hasErrors('password')}"
+										th:errors="*{password}" class="fieldError">Incorrect Data</p>
 								</div>
 							</div>
 
 							<div class="form-group row">
+
 								<div class="col-md-12">
-									<label th:for="address" class="text-black">주소</label> <input
-										type="text" class="form-control" placeholder="주소를 입력해주세요" th:field="*{address}">
-									<p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect Data</p>
+								
+									<input type="hidden" id="postalCode" name="postalCode"
+										class="form-control" placeholder="우편번호" readonly> <input
+										type="hidden" id="roadNameAddress" name="roadNameAddress"
+										class="form-control" placeholder="도로명 주소" readonly> <input
+										type="hidden" id="landNumberAddress" name="landNumberAddress"
+										class="form-control" placeholder="지번 주소" readonly> <input
+										type="hidden" id="reference" name="reference"
+										class="form-control" placeholder="참고 사항" readonly> <label
+										th:for="address" class="text-black">주소</label> 	<input class="button_address" style="" type="button" onclick="post_code()" value="우편번호 찾기"><br> <input
+										type="text" id="address" name="address" class="form-control"
+										placeholder="주소를 입력해주세요" th:field="*{address}">
+
+									<p th:if="${#fields.hasErrors('address')}"
+										th:errors="*{address}" class="fieldError">Incorrect Data</p>
+
+									<div id="guide" style="margin-top: 5px; display: none"></div>
 								</div>
 							</div>
 
@@ -82,12 +109,63 @@
 </div>
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
 <th:block layout:fragment="script">
+	<script
+		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script th:inline="javascript">
 		//회원가입이 실패 했을때
 		var errorMessage = [[${errorMessage}]];
 		
 		if(errorMessage != null){
 			alert(errorMessage);
+		}
+		function post_code() {
+		    new daum.Postcode({
+		        oncomplete: function(data) {
+		            var roadAddr = data.roadAddress;
+		            var extraRoadAddr = '';
+
+		            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+		                extraRoadAddr += data.bname;
+		            }
+
+		            if (data.buildingName !== '' && data.apartment === 'Y') {
+		                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+		            }
+
+		            if (extraRoadAddr !== '') {
+		                extraRoadAddr = ' (' + extraRoadAddr + ')';
+		            }
+
+		            document.getElementById('postalCode').value = data.zonecode;
+		            document.getElementById("roadNameAddress").value = roadAddr;
+		            document.getElementById("landNumberAddress").value = data.jibunAddress;
+
+		            if (roadAddr !== '') {
+		                document.getElementById("reference").value = extraRoadAddr;
+		            } else {
+		                document.getElementById("reference").value = '';
+		            }
+
+		            // 도로명 주소와 추가 주소를 결합하여 주소 입력 필드에 설정
+		            document.getElementById("address").value = roadAddr + extraRoadAddr;
+
+		            var guideTextBox = document.getElementById("guide");
+
+		            if (data.autoRoadAddress) {
+		                var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+		                guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+		                guideTextBox.style.display = 'block';
+
+		            } else if (data.autoJibunAddress) {
+		                var expJibunAddr = data.autoJibunAddress;
+		                guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+		                guideTextBox.style.display = 'block';
+		            } else {
+		                guideTextBox.innerHTML = '';
+		                guideTextBox.style.display = 'none';
+		            }
+		        }
+		    }).open();
 		}
 	</script>
 </th:block>
