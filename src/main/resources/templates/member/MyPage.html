@@ -1,4 +1,5 @@
-	<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/layout1}">
@@ -15,9 +16,9 @@
 	width: 100%;
 	height: 450px;
 	background: #ccc;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url('/images/about_1.jpg');
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+		url('/images/about_1.jpg');
 	background-size: cover;
-	 
 }
 
 .link {
@@ -59,16 +60,47 @@
 	color: red !important;
 }
 
-.card-title{
-	margin:  12px 0 !important;
+.card-title {
+	margin: 12px 0 !important;
 }
-.card-text{
+
+.card-text {
 	width: 500px !important;
 }
 
-.text-body-secondary{
+.text-body-secondary {
 	font-size: 14px;
+}
 
+.myhead {
+	width: 1100px;
+	justify-content: center;
+	margin: 35px auto;
+	align-items: center;
+}
+
+.myhead-h3 {
+	color: black;
+}
+
+.rounded {
+	width: 150px;
+	height: 175px;
+}
+
+.card-flex-order {
+	border: none;
+}
+
+.myhead-h3-div {
+	display: flex;
+}
+
+.myhead-div {
+	float: left;
+	margin-left: 760px;
+	border: none;
+	height: 33px;
 }
 </style>
 </th:block>
@@ -79,7 +111,8 @@
 		<p
 			style="background-image: url('/images/users.png'); background-size: cover;"></p>
 	</div>
-	<form th:action="@{'/member/mypage'}" method="get" th:object="${member}">
+	<form th:action="@{'/member/mypage'}" method="get"
+		th:object="${member}">
 		<input type="hidden" id="memberId" th:value="${member.Id}" />
 		<ul class="members">
 			<li class="memberbut">
@@ -100,10 +133,91 @@
 			</li>
 		</ul>
 	</form>
-	
-	
-	
+	<div>
+		<div class="myhead">
+			<div class="myhead-h3-div">
+				<h3 class="myhead-h3">구매 이력</h3>
+				<button class="myhead-div"onclick="location.href ='/orders'">전체 보기</button>
+			</div>
+			<div th:each="order : ${orders.getContent()}">
+
+				<div class="card d-flex flex-row card-flex-order">
+					<div th:each="orderItem: ${order.orderItemDtoList}"
+						class="d-flex mb-3" style="width: 90%">
+
+						<div class="repImgDiv">
+							<img th:src="${orderItem.imgUrl}" th:alt="${orderItem.itemNm}"
+								class="rounded repImg">
+						</div>
+
+						<div class="align-self-center w-75">
+							<span th:text="${orderItem.itemNm}" class="font-weight-bold"
+								style="font-size: 18px; color: black;"></span>
+							<div class="fs18 font-weight-light">
+								<span
+									th:text="${#numbers.formatInteger(orderItem.orderPrice, 0, 'COMMA')}+'원'"></span>
+								/ <span th:text="${orderItem.count} + '개'"></span>
+							</div>
+							<div class="d-flex mb-3 align-self-center">
+								<th:block th:if="${#strings.equals(order.orderStatus, 'ORDER')}">
+									<h4 th:text="${order.orderDate} + '주문'"
+										style="font-size: 18px;"></h4>
+								</th:block>
+								<th:block
+									unless="${#strings.equals(order.orderStatus, 'ORDER')}">
+									<h4 style="font-size: 18px;"></h4>
+								</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		<div class="myhead">
+			<div class="myhead-h3-div">
+				<h3 class="myhead-h3" >장바 구니</h3>
+				<button class="myhead-div"onclick="location.href ='/carts'">전체 보기</button>
+			</div>
+				<div th:each="cart : ${carts.getContent()}">
+
+				<div class="card d-flex flex-row card-flex-order">
+					<div th:each="cartItem: ${cart.cartItemDtoList}"
+						class="d-flex mb-3" style="width: 90%">
+
+						<div class="repImgDiv">
+							<img th:src="${cartItem.imgUrl}" th:alt="${cartItem.itemNm}"
+								class="rounded repImg">
+						</div>
+
+						<div class="align-self-center w-75">
+							<span th:text="${cartItem.itemNm}" class="font-weight-bold"
+								style="font-size: 18px; color: black;"></span>
+							<div class="fs18 font-weight-light">
+								<span
+									th:text="${#numbers.formatInteger(cartItem.cartPrice, 0, 'COMMA')}+'원'"></span>
+								/ <span th:text="${cartItem.count} + '개'"></span>
+							</div>
+							<div class="d-flex mb-3 align-self-center">
+								<th:block th:if="${#strings.equals(cart.cartStatus, 'CART')}">
+									<h4 th:text="${cart.cartDate} + '담음'"
+										style="font-size: 18px;"></h4>
+								</th:block>
+								<th:block
+									unless="${#strings.equals(cart.cartStatus, 'CART')}">
+									<h4 style="font-size: 18px;"></h4>
+								</th:block>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+</div>
 
 
 <!-- 각 페이지의 스크립트가 작성될 위치 -->
