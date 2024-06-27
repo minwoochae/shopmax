@@ -67,16 +67,17 @@
 
 				<th:block th:each="item, status: ${itemsRank}">
 					<div class="col-lg-4 col-md-6 item-entry mb-4">
-						<a th:href="'/item/' + ${item.id}" class="product-item md-height bg-gray d-block"> <img
+						<a th:href="'/item/' + ${item.id}"
+							class="product-item md-height bg-gray d-block"> <img
 							th:src="${item.imgUrl}" th:alt="${item.itemNm}" class="img-fluid">
 						</a>
 						<h2 class="item-title">
 							<a th:href="'/item/' + ${item.id}">
-							[[${item.itemNm}]]&nbsp;&nbsp;[[${item.itemNm}]]</a>
+								[[${item.itemNm}]]&nbsp;&nbsp;[[${item.itemNm}]]</a>
 						</h2>
-						<strong class="item-price"><del>[[${#numbers.formatInteger(item.price * 1.5, 0 , 'COMMA')}]]원</del>
-						 &nbsp;&nbsp;
-						 [[${#numbers.formatInteger(item.price, 0 , 'COMMA')}]]원</strong>
+						<strong class="item-price"><del>[[${#numbers.formatInteger(item.price
+								* 1.5, 0 , 'COMMA')}]]원</del> &nbsp;&nbsp;
+							[[${#numbers.formatInteger(item.price, 0 , 'COMMA')}]]원</strong>
 
 						<div class="star-rating">
 							<span class="icon-star2 text-warning"></span> <span
@@ -134,22 +135,16 @@
 	</div>
 
 
-	<div class="site-blocks-cover inner-page py-5" data-aos="fade">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 ml-auto order-md-2 align-self-start">
-					<div class="site-block-cover-content">
-						<h2 class="sub-title">#New Summer Collection 2019</h2>
-						<h1>New Shoes</h1>
-						<p>
-							<a href="#" class="btn btn-black rounded-0">Shop Now</a>
-						</p>
-					</div>
-				</div>
-				<div class="col-md-6 order-1 align-self-end">
-					<img src="images/model_6.png" alt="Image" class="img-fluid">
+	<div class="container">
+		<div class="row">
+			<div style="display: flex; margin-bottom: 13px;">
+				<div class="Address-Home">인천시 부평구 안남로 272 (우)21363</div>
+				<div style="margin-left:820px;">
+					<a class="Address-href" href="https://kko.to/0kRgoVtk_T"
+						target='_blank'>이동하기</a>
 				</div>
 			</div>
+			<div id="map" style="width: 2000px; height: 400px;"></div>
 		</div>
 	</div>
 </div>
